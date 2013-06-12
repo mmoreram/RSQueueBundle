@@ -1,0 +1,16 @@
+{
+    "name": "mmoreramerino/rs-queue-bundle",
+    "type": "symfony-bundle",
+    "description": "Redis Symfony2 Queue Bundle, a simple and soft redis based message queue for symfony2",
+    "keywords": ["redis", "queue", "symfony"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Marc Morera",
+            "email": "yuhu@mmoreram.com"
+        }
+    ],
+    "require": {
+        "snc/redis-bundle": "2.1.x-dev"
+    },
+}

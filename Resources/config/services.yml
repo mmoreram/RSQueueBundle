@@ -1,0 +1,17 @@
+parameters:
+    rs_queue.serializer: "Mmoreramerino\RSQueueBundle\Serialization\PHPSerializer"
+
+services:
+    rsqueue.producer:
+        class: Mmoreramerino\RSQueueBundle\Services\Producer
+        arguments:
+            redis: @snc_redis.default
+            queueNames: %rs_queue.queues%
+            serializer: %rs_queue.serializer%
+
+    rsqueue.consumer:
+        class: Mmoreramerino\RSQueueBundle\Services\Consumer
+        arguments:
+            redis: @snc_redis.default
+            queueNames: %rs_queue.queues%
+            serializer: %rs_queue.serializer%
