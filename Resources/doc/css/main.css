@@ -1,0 +1,17 @@
+
+
+/* ==========================================================================
+   Author's custom styles
+   ========================================================================== */
+
+.summary {margin-top:30px;color:#999;text-align:center;}
+.summary .row {margin-bottom:30px;}
+.summary .row p {margin-top:20px;font-size:16px;line-height:1.5;}
+.summary .row img {width:80%; max-width: 300px}
+
+.documentation {color:#5A5A5A;text-align:center;}
+.documentation .span6 p{text-align:left;color:#999;}
+.documentation h1 {margin:60px 0 10px;font-size:60px;font-weight:200;line-height:1;letter-spacing:-1px;}
+.documentation p.pre {margin-bottom:40px;font-size:20px;font-weight:300;line-height:1.25;color:#777;}
+.documentation .code {margin:20px 0px 20px 10px; padding-left:10px; border-left:solid 2px #BBB; color: #666; text-align: left}
+.documentation .code .tab1 {margin-left:30px}

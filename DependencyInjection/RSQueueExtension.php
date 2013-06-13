@@ -1,6 +1,6 @@
 <?php
 
-namespace Mmoreramerino\RSQueueBundle\DependencyInjection;
+namespace Mmoreram\RSQueueBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
@@ -22,14 +22,14 @@ class RSQueueExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
-        $config = array();
-        foreach ($configs as $subConfig) {
-            $config = array_merge($config, $subConfig);
-        }
+        $container->setParameter(
+            'rs_queue.queue_aliases',
+            $config['queue_aliases']
+        );
 
         $container->setParameter(
-            'rs_queue.queues',
-            $config['queues']
+            'rs_queue.serializer.class',
+            $config['serializer']
         );
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));

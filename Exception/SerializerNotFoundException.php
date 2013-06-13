@@ -6,7 +6,7 @@
  * Marc Morera 2013
  */
 
-namespace Bundle\SommelierBundle\Exception;
+namespace Mmoreram\RSQueueBundle\Exception;
 
 use Exception;
 
@@ -15,6 +15,6 @@ use Exception;
  * 
  * When queue name not belongs to any configured queue
  */
-class InvalidQueueNameException extends Exception
+class SerializerNotFoundException extends Exception
 {
 }

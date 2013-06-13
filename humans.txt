@@ -1,0 +1,18 @@
+                            
+/* TEAM */            
+PHP Developer and founder: : Marc Morera 
+Site: http://rsqueue.com
+Twitter: mmoreram                   
+Location: Barcelona, Catalunya, Catalunya.
+
+/* THANKS */
+http://redis.io
+http://github.com
+http://symfony.com
+Fabien Potencier
+
+/* SITE */
+Last update: 2013/06/21
+Standards: HTML5, CSS3, 
+Components: Modernizr, jQuery
+Software: PHP5.3, Symfony2, Redis, Composer, Sublime Text 2

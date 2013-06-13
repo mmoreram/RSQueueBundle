@@ -1,8 +1,9 @@
 {
-    "name": "mmoreramerino/rs-queue-bundle",
+    "name": "mmoreram/rsqueue-bundle",
     "type": "symfony-bundle",
     "description": "Redis Symfony2 Queue Bundle, a simple and soft redis based message queue for symfony2",
-    "keywords": ["redis", "queue", "symfony"],
+    "keywords": ["rsqueue", "redis", "queue", "symfony"],
+    "homepage":  "http://rsqueue.com",
     "license": "MIT",
     "authors": [
         {
@@ -11,6 +12,22 @@
         }
     ],
     "require": {
-        "snc/redis-bundle": "2.1.x-dev"
+        "symfony/event-dispatcher": "2.3.*@dev",
+        "symfony/framework-bundle": "2.3.*@dev",
+        "symfony/console": "2.3.*@dev",
+        "symfony/config": "2.3.*@dev",
+        "symfony/http-kernel": "2.3.*@dev",
+        "symfony/dependency-injection": "2.3.*@dev",
+        "snc/redis-bundle": "2.1.x-dev",
+        "twitter/bootstrap": "dev-master"
     },
+    "target-dir": "Mmoreram/RSQueueBundle",
+    "autoload": {
+        "psr-0": { "Mmoreram\\RSQueueBundle": "" }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "2.3.x-dev"
+        }
+    }
 }

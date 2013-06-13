@@ -6,7 +6,9 @@
  * Marc Morera 2013
  */
 
-namespace Mmoreramerino\RSQueueBundle\Serialization;
+namespace Mmoreram\RSQueueBundle\Serializer;
+
+use Mmoreram\RSQueueBundle\Serializer\Interfaces\SerializerInterface;
 
 /**
  * Implementation of Json Serializer 

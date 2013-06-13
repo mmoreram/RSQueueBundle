@@ -6,101 +6,41 @@
  * Marc Morera 2013
  */
 
-namespace Mmoreramerino\RSQueueBundle\Services;
+namespace Mmoreram\RSQueueBundle\Services;
 
-use Predis\Client as RedisClient;
-use Mmoreramerino\RSQueueBundle\Exception\InvalidQueueNameException;
+use Mmoreram\RSQueueBundle\Services\Abstracts\AbstractService;
+use Mmoreram\RSQueueBundle\RSQueueEvents;
+use Mmoreram\RSQueueBundle\Event\RSQueueProducerEvent;
 
 /**
- * Common Producer
- * 
- * This class is defined just to add single jobs inside queues.
+ * Provider class
  */
-class Producer
+class Producer extends AbstractService
 {
-
     /**
-     * @var Predis\Client
+     * Enqueues payload inside desired queue
      * 
-     * Redis client used to interact with redis service
-     */
-    private $redis;
-
-
-    /**
-     * @var Array
-     * 
-     * Queue names configured in config file
-     */
-    private $queueNames;
-
-
-    /**
-     * @var SerializerInterface
-     * 
-     * Serializer
-     */
-    private $serializer;
-
-
-    /**
-     * @param Predis\Client       $redis      Redis object
-     * @param Array               $queueNames Queue names array
-     * @param SerializerInterface $serializer Serializer
-     * 
-     * Construct method
-     */
-    public function __construct(RedisClient $redis, Array $queueNames, SerializerInterface $serializer)
-    {
-        $this->redis = $redis;
-        $this->queueNames = $queueNames;
-        $this->serializer = $serializer;
-    }
-
-
-    /**
-     * Enqueues whatever inside desired queue
-     * 
-     * @param String $queue_name Name of queue to enqueue this job
-     * @param Mixed  $payload    Data to store inside Job
+     * @param String $queueAlias Name of queue to enqueue payload
+     * @param Mixed  $payload    Data to enqueue
      * 
      * @return Producer self Object
+     * 
+     * @throws InvalidAliasException If any alias is not defined
      */
-    public function enqueue($payload, $queueName)
+    public function produce($payload, $queueAlias)
     {
-        if (!isset($this->queueNames[$queueName])) {
-
-            throw new InvalidQueueNameException;
-        }
+        $queue = $this->queueAliasResolver->get($queueAlias);
 
         $this->redis->rpush(
-            $this->queueNames[$queueName], 
+            $queue, 
             $this->serializer->apply($payload)
         );
 
-        return $this;
-    }
-
-
-    /**
-     * publish whatever inside desired channel
-     * 
-     * @param String $queue_name Name of queue to enqueue this job
-     * @param Mixed  $payload    Data to store inside Job
-     * 
-     * @return Producer self Object
-     */
-    public function publish($payload, $channel)
-    {
-        if (!isset($this->queueNames[$queueName])) {
-
-            throw new InvalidQueueNameException;
-        }
-
-        $this->redis->publish(
-            $this->queueNames[$queueName], 
-            $this->serializer->apply($payload)
-        );
+        /**
+         * Dispatching producer event...
+         */
+        $producerEvent = new RSQueueProducerEvent($payload, $queueAlias, $queue, $this->redis);
+        $this->eventDispatcher->dispatch(RSQueueEvents::RSQUEUE_PRODUCER, $producerEvent);
 
         return $this;
     }

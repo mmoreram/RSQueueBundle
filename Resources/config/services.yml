@@ -1,17 +1,41 @@
 parameters:
-    rs_queue.serializer: "Mmoreramerino\RSQueueBundle\Serialization\PHPSerializer"
+    rs_queue.serializer.factory.class: "Mmoreram\RSQueueBundle\Factory\SerializerFactory"
+    rs_queue.serializer.interface: "Mmoreram\RSQueueBundle\SerializerInterface"
+    rs_queue.resolver.queuealias.class: "Mmoreram\RSQueueBundle\Resolver\QueueAliasResolver"
 
 services:
-    rsqueue.producer:
-        class: Mmoreramerino\RSQueueBundle\Services\Producer
-        arguments:
-            redis: @snc_redis.default
-            queueNames: %rs_queue.queues%
-            serializer: %rs_queue.serializer%
 
-    rsqueue.consumer:
-        class: Mmoreramerino\RSQueueBundle\Services\Consumer
+    rs_queue.serializer.factory:
+        class: %rs_queue.serializer.factory.class%
         arguments:
+            serializerClass: %rs_queue.serializer.class%
+
+    rs_queue.serializer:
+        class: %rs_queue.serializer.interface%
+        factory_service: rs_queue.serializer.factory
+        factory_method: get
+
+    rs_queue.resolver.queuealias:
+        class: %rs_queue.resolver.queuealias.class%
+        arguments: 
+            queueAliases: %rs_queue.queue_aliases%
+
+    rs_queue.service:
+        abstract: true
+        arguments:
+            eventDispatcher: @event_dispatcher
             redis: @snc_redis.default
-            queueNames: %rs_queue.queues%
-            serializer: %rs_queue.serializer%
+            queueNamesResolver: @rs_queue.resolver.queuealias
+            serializer: @rs_queue.serializer
+
+    rs_queue.consumer:
+        class: Mmoreram\RSQueueBundle\Services\Consumer
+        parent: rs_queue.service
+
+    rs_queue.producer:
+        class: Mmoreram\RSQueueBundle\Services\Producer
+        parent: rs_queue.service
+
+    rs_queue.publisher:
+        class: Mmoreram\RSQueueBundle\Services\Publisher
+        parent: rs_queue.service

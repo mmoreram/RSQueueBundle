@@ -6,7 +6,7 @@
  * Marc Morera 2013
  */
 
-namespace Mmoreramerino\RSQueueBundle\DependencyInjection;
+namespace Mmoreram\RSQueueBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -27,13 +27,14 @@ class Configuration implements ConfigurationInterface
         $rootNode = $treeBuilder->root('rs_queue');
 
         $rootNode
+            ->addDefaultsIfNotSet()
             ->children()
-                ->arrayNode('queues')
-                    ->defaultValue(array())
+                ->arrayNode('queue_aliases')
                     ->prototype('scalar')->end()
                 ->end()
                 ->scalarNode('serializer')
-                    ->defaultValue('Mmoreramerino\RSQueueBundle\Serialization\JsonSerializer')
+                    ->treatNullLike('Mmoreram\\RSQueueBundle\\Serializer\\JsonSerializer')
+                    ->defaultValue('Mmoreram\\RSQueueBundle\\Serializer\\JsonSerializer')
                 ->end()
             ->end();
 

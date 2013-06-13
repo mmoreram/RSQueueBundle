@@ -6,78 +6,40 @@
  * Marc Morera 2013
  */
 
-namespace Mmoreramerino\RSQueueBundle\Services;
+namespace Mmoreram\RSQueueBundle\Services;
 
-use Predis\Client as RedisClient;
-use Mmoreramerino\RSQueueBundle\Exception\InvalidQueueNameException;
+use Mmoreram\RSQueueBundle\Services\Abstracts\AbstractService;
+use Mmoreram\RSQueueBundle\RSQueueEvents;
+use Mmoreram\RSQueueBundle\Event\RSQueueConsumerEvent;
 
 /**
- * Common Consumer
- * 
- * This class is defined just to retrieve
+ * Consumer class
  */
-class Consumer
+class Consumer extends AbstractService
 {
-
-    /**
-     * @var Predis\Client
-     * 
-     * Redis client used to interact with redis service
-     */
-    private $redis;
-
-
-    /**
-     * @var Array
-     * 
-     * Queue names configured in config file
-     */
-    private $queueNames;
-
-
-    /**
-     * @var SerializerInterface
-     * 
-     * Serializer
-     */
-    private $serializer;
-
-
-    /**
-     * @param Predis\Client       $redis      Redis object
-     * @param Array               $queueNames Queue names array
-     * @param SerializerInterface $serializer Serializer
-     * 
-     * Construct method
-     */
-    public function __construct(RedisClient $redis, Array $queueNames, SerializerInterface $serializer)
-    {
-        $this->redis = $redis;
-        $this->queueNames = $queueNames;
-        $this->serializer = $serializer;
-    }
-
 
     /**
      * Retrieve queue value, with a defined timeout
      * 
-     * @param String  $queueName Name of queue to enqueue this job
-     * @param Integer $timeout   Timeout
+     * @param String  $queueAlias Alias of queue to consume from
+     * @param Integer $timeout    Timeout
      * 
      * @return Mixed payload unserialized
+     * 
+     * @throws InvalidAliasException If any alias is not defined
      */
-    public function retrieve($queueName, $timeout)
+    public function consume($queueAlias, $timeout)
     {
-        if (!isset($this->queueNames[$queueName])) {
+        $queue = $this->queueAliasResolver->get($queueAlias);
+        $payloadArray = $this->redis->blpop($queue, $timeout);
+        $payload = $this->serializer->revert($payloadArray[1]);
 
-            throw new InvalidQueueNameException;
-        }
+        /**
+         * Dispatching consumer event...
+         */
+        $consumerEvent = new RSQueueConsumerEvent($payload, $queueAlias, $queue, $this->redis);
+        $this->eventDispatcher->dispatch(RSQueueEvents::RSQUEUE_CONSUMER, $consumerEvent);
 
-        return $this->serializer->revert(
-            $this->redis->rpop(
-                $this->queueNames[$queueName], 
-                $timeout
-            )
-        );
+        return $payload;
     }
 }

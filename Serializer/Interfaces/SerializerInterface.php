@@ -6,12 +6,12 @@
  * Marc Morera 2013
  */
 
-namespace Mmoreramerino\RSQueueBundle\Serialization;
+namespace Mmoreram\RSQueueBundle\Serializer\Interfaces;
 
 /**
- * Implementation of PHP native Serializer 
+ * Interface for any kind of serialization   
  */
-class PHPSerializer implements SerializerInterface
+interface SerializerInterface
 {
 
     /**
@@ -21,10 +21,7 @@ class PHPSerializer implements SerializerInterface
      * 
      * @return string
      */
-    public function apply($unserializedData) 
-    {
-        return serialize($unserializedData);
-    }
+    public function apply($unserializedData);
 
 
     /**
@@ -34,8 +31,5 @@ class PHPSerializer implements SerializerInterface
      * 
      * @return mixed
      */
-    public function revert($serializedData)
-    {
-        return unserialize($serializedData);
-    }
+    public function revert($serializedData);
 }
