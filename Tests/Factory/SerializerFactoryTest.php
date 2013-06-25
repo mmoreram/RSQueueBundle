@@ -2,7 +2,7 @@
 
 /**
  * RSQueueBundle for Symfony2
- * 
+ *
  * Marc Morera 2013
  */
 
@@ -49,9 +49,9 @@ class SerializerFactoryTest extends \PHPUnit_Framework_TestCase
         $serializerFactory = new SerializerFactory('\\Mmoreram\\RSQueueBundle\\Tests\\Factory\\Serializer\\EngongaSerializer');
 
         try {
-        
+
             $serializerFactory->get();
-        } catch(SerializerNotFoundException $expected) {
+        } catch (SerializerNotFoundException $expected) {
 
             return;
         }
@@ -78,9 +78,9 @@ class SerializerFactoryTest extends \PHPUnit_Framework_TestCase
         $serializerFactory = new SerializerFactory('\\Mmoreram\\RSQueueBundle\\Tests\\Factory\\Serializer\\FooSerializer');
 
         try {
-        
+
             $serializerFactory->get();
-        } catch(SerializerNotImplementsInterfaceException $expected) {
+        } catch (SerializerNotImplementsInterfaceException $expected) {
 
             return;
         }

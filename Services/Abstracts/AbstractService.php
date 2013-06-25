@@ -2,7 +2,7 @@
 
 /**
  * RSQueueBundle for Symfony2
- * 
+ *
  * Marc Morera 2013
  */
 
@@ -16,14 +16,14 @@ use Mmoreram\RSQueueBundle\Resolver\QueueAliasResolver;
 
 /**
  * Abstract service
- * 
+ *
  * Provides base structure of all rsqueue services
  */
 class AbstractService
 {
     /**
      * @EventDispatcher
-     * 
+     *
      * EventDispatcher instance
      */
     protected $eventDispatcher;
@@ -31,7 +31,7 @@ class AbstractService
 
     /**
      * @var Predis\Client
-     * 
+     *
      * Redis client used to interact with redis service
      */
     protected $redis;
@@ -39,7 +39,7 @@ class AbstractService
 
     /**
      * @var QueueAliasResolver
-     * 
+     *
      * Queue alias resolver
      */
     protected $queueAliasResolver;
@@ -47,7 +47,7 @@ class AbstractService
 
     /**
      * @var SerializerInterface
-     * 
+     *
      * Serializer
      */
     protected $serializer;
@@ -58,7 +58,7 @@ class AbstractService
      * @param Predis\Client       $redis              Redis instance
      * @param QueueAliasResolver  $queueAliasResolver Resolver for queue alias
      * @param SerializerInterface $serializer         Serializer instance
-     * 
+     *
      * Construct method
      */
     public function __construct(EventDispatcher $eventDispatcher, RedisClient $redis, QueueAliasResolver $queueAliasResolver, SerializerInterface $serializer)

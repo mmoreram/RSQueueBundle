@@ -2,7 +2,7 @@
 
 /**
  * RSQueueBundle for Symfony2
- * 
+ *
  * Marc Morera 2013
  */
 
@@ -19,12 +19,12 @@ class Producer extends AbstractService
 {
     /**
      * Enqueues payload inside desired queue
-     * 
-     * @param String $queueAlias Name of queue to enqueue payload
+     *
      * @param Mixed  $payload    Data to enqueue
-     * 
+     * @param String $queueAlias Name of queue to enqueue payload
+     *
      * @return Producer self Object
-     * 
+     *
      * @throws InvalidAliasException If any alias is not defined
      */
     public function produce($payload, $queueAlias)
@@ -32,7 +32,7 @@ class Producer extends AbstractService
         $queue = $this->queueAliasResolver->get($queueAlias);
 
         $this->redis->rpush(
-            $queue, 
+            $queue,
             $this->serializer->apply($payload)
         );
 

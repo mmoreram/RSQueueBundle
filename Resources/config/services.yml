@@ -18,7 +18,7 @@ services:
     rs_queue.resolver.queuealias:
         class: %rs_queue.resolver.queuealias.class%
         arguments: 
-            queueAliases: %rs_queue.queue_aliases%
+            queueAliases: %rs_queue.queues%
 
     rs_queue.service:
         abstract: true

@@ -2,7 +2,7 @@
 
 /**
  * RSQueueBundle for Symfony2
- * 
+ *
  * Marc Morera 2013
  */
 
@@ -23,7 +23,7 @@ abstract class ConsumerCommand extends ContainerAwareCommand
 
     /**
      * @var string
-     * 
+     *
      * Queue name to consume from
      */
     private $queueAlias;
@@ -31,11 +31,11 @@ abstract class ConsumerCommand extends ContainerAwareCommand
 
     /**
      * Set queue alias to consume from
-     * 
+     *
      * @param String $queueAlias Queue alias
-     * 
+     *
      * @return ConsumerCommand self Object
-     * 
+     *
      * @throws InvalidAliasException If any alias is not defined
      */
     protected function setQueueAlias($queueAlias)
@@ -53,7 +53,7 @@ abstract class ConsumerCommand extends ContainerAwareCommand
 
     /**
      * Configure command
-     * 
+     *
      * Some options are included
      * * timeout ( default: 0)
      * * iterations ( default: 0)
@@ -66,8 +66,8 @@ abstract class ConsumerCommand extends ContainerAwareCommand
                 'timeout',
                 null,
                 InputOption::VALUE_OPTIONAL,
-                'Consumer timeout. 
-                If 0, no timeout is set. 
+                'Consumer timeout.
+                If 0, no timeout is set.
                 Otherwise consumer will lose conection after timeout if queue is empty.
                 By default, 0',
                 0
@@ -76,7 +76,7 @@ abstract class ConsumerCommand extends ContainerAwareCommand
                 'iterations',
                 null,
                 InputOption::VALUE_OPTIONAL,
-                'Number of iterations before this command kills itself. 
+                'Number of iterations before this command kills itself.
                 If 0, consumer will listen queue until process is killed by hand or by exception.
                 You can manage this behavour by using some Process Control System, e.g. Supervisord
                 By default, 0',
@@ -91,17 +91,16 @@ abstract class ConsumerCommand extends ContainerAwareCommand
                 Otherwise, php will sleep X seconds each iteration.
                 By default, 0',
                 0
-            )
-        ;
+            );
     }
 
 
     /**
      * Execute code.
-     * 
+     *
      * Each time new payload is consumed from queue, consume() method is called.
      * When iterations get the limit, process literaly dies
-     * 
+     *
      * @param InputInterface  $input  An InputInterface instance
      * @param OutputInterface $output An OutputInterface instance
      */
@@ -137,7 +136,7 @@ abstract class ConsumerCommand extends ContainerAwareCommand
 
     /**
      * Consume method with retrieved queue value
-     * 
+     *
      * @param InputInterface  $input   An InputInterface instance
      * @param OutputInterface $output  An OutputInterface instance
      * @param Mixed           $payload Data retrieved and unserialized from queue

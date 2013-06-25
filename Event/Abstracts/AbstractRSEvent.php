@@ -2,7 +2,7 @@
 
 /**
  * RSQueueBundle for Symfony2
- * 
+ *
  * Marc Morera 2013
  */
 
@@ -12,12 +12,15 @@ use Symfony\Component\EventDispatcher\Event;
 use Predis\Client as RedisClient;
 
 
+/**
+ * Abstract event
+ */
 abstract class AbstractRSEvent extends Event
 {
 
     /**
      * @var Mixed
-     * 
+     *
      * Payload
      */
     protected $payload;
@@ -25,7 +28,7 @@ abstract class AbstractRSEvent extends Event
 
     /**
      * @var Redis
-     * 
+     *
      * Redis instance
      */
     protected $redis;
@@ -33,7 +36,7 @@ abstract class AbstractRSEvent extends Event
 
     /**
      * Construct method
-     * 
+     *
      * @param Mixed       $payload Payload
      * @param RedisClient $redis   Redis instance
      */
@@ -46,7 +49,7 @@ abstract class AbstractRSEvent extends Event
 
     /**
      * Return payload
-     * 
+     *
      * @return Mixed
      */
     public function getPayload()
@@ -57,7 +60,7 @@ abstract class AbstractRSEvent extends Event
 
     /**
      * Return redis instance
-     * 
+     *
      * @return Redis
      */
     public function getRedis()

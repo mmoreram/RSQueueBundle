@@ -2,7 +2,7 @@
 
 /**
  * RSQueueBundle for Symfony2
- * 
+ *
  * Marc Morera 2013
  */
 
@@ -18,15 +18,15 @@ class RSQueueConsumerEventTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @var RSQueueConsumerEvent
-     * 
+     *
      * Object to test
      */
-    private $RSQueueConsumerEvent;
+    private $rsqueueConsumerEvent;
 
 
     /**
      * @var string
-     * 
+     *
      * Payload for testing
      */
     private $payload = '{"foo":"foodata","engonga":"someengongadata"}';
@@ -34,7 +34,7 @@ class RSQueueConsumerEventTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @var string
-     * 
+     *
      * Queue Alias
      */
     private $queueAlias = 'queueAlias';
@@ -42,7 +42,7 @@ class RSQueueConsumerEventTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @var string
-     * 
+     *
      * Queue Name
      */
     private $queueName = 'queueName';
@@ -50,7 +50,7 @@ class RSQueueConsumerEventTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @var Redis
-     * 
+     *
      * Redis mock instance
      */
     private $redis;
@@ -63,7 +63,7 @@ class RSQueueConsumerEventTest extends \PHPUnit_Framework_TestCase
     {
 
         $this->redis = $this->getMock('Predis\Client');
-        $this->RSQueueConsumerEvent = new RSQueueConsumerEvent($this->payload, $this->queueAlias, $this->queueName, $this->redis);
+        $this->rsqueueConsumerEvent = new RSQueueConsumerEvent($this->payload, $this->queueAlias, $this->queueName, $this->redis);
     }
 
 
@@ -72,7 +72,7 @@ class RSQueueConsumerEventTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetPayload()
     {
-        $this->assertEquals($this->RSQueueConsumerEvent->getPayload(), $this->payload);
+        $this->assertEquals($this->rsqueueConsumerEvent->getPayload(), $this->payload);
     }
 
 
@@ -81,7 +81,7 @@ class RSQueueConsumerEventTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetQueueName()
     {
-        $this->assertEquals($this->RSQueueConsumerEvent->getQueueName(), $this->queueName);
+        $this->assertEquals($this->rsqueueConsumerEvent->getQueueName(), $this->queueName);
     }
 
 
@@ -90,7 +90,7 @@ class RSQueueConsumerEventTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetQueueAlias()
     {
-        $this->assertEquals($this->RSQueueConsumerEvent->getQueueAlias(), $this->queueAlias);
+        $this->assertEquals($this->rsqueueConsumerEvent->getQueueAlias(), $this->queueAlias);
     }
 
 
@@ -99,6 +99,6 @@ class RSQueueConsumerEventTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetRedis()
     {
-        $this->assertSame($this->RSQueueConsumerEvent->getRedis(), $this->redis);
+        $this->assertSame($this->rsqueueConsumerEvent->getRedis(), $this->redis);
     }
 }

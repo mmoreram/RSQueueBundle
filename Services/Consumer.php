@@ -2,7 +2,7 @@
 
 /**
  * RSQueueBundle for Symfony2
- * 
+ *
  * Marc Morera 2013
  */
 
@@ -20,12 +20,12 @@ class Consumer extends AbstractService
 
     /**
      * Retrieve queue value, with a defined timeout
-     * 
+     *
      * @param String  $queueAlias Alias of queue to consume from
      * @param Integer $timeout    Timeout
-     * 
+     *
      * @return Mixed payload unserialized
-     * 
+     *
      * @throws InvalidAliasException If any alias is not defined
      */
     public function consume($queueAlias, $timeout)

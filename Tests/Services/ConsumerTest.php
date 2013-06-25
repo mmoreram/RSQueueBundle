@@ -2,7 +2,7 @@
 
 /**
  * RSQueueBundle for Symfony2
- * 
+ *
  * Marc Morera 2013
  */
 
@@ -27,7 +27,7 @@ class ConsumerTest extends \PHPUnit_Framework_TestCase
         $timeout = 'timeout';
         $payload = array('engonga');
 
-        $redis = $this 
+        $redis = $this
             ->getMock('Predis\Client', array('blpop'));
 
         $redis
@@ -45,12 +45,7 @@ class ConsumerTest extends \PHPUnit_Framework_TestCase
             ->with($this->equalTo(json_encode($payload)))
             ->will($this->returnValue($payload));
 
-        $RSQueueConsumerEvent = $this   
-            ->getMockBuilder('Mmoreram\RSQueueBundle\Event\RSQueueConsumerEvent')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $queueAliasResolver = $this 
+        $queueAliasResolver = $this
             ->getMockBuilder('Mmoreram\RSQueueBundle\Resolver\QueueAliasResolver')
             ->setMethods(array('get'))
             ->disableOriginalConstructor()

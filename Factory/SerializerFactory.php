@@ -2,7 +2,7 @@
 
 /**
  * RSQueueBundle for Symfony2
- * 
+ *
  * Marc Morera 2013
  */
 
@@ -12,14 +12,14 @@ use Mmoreram\RSQueueBundle\Exception\SerializerNotImplementsInterfaceException;
 use Mmoreram\RSQueueBundle\Exception\SerializerNotFoundException;
 
 /**
- * Interface for any kind of serialization   
+ * Interface for any kind of serialization
  */
 class SerializerFactory
 {
 
     /**
      * @var SerializerInterface
-     * 
+     *
      * Serializer
      */
     protected $serializerType;
@@ -27,9 +27,9 @@ class SerializerFactory
 
     /**
      * Construct method
-     * 
+     *
      * @param string $serializerType Serializer type
-     * 
+     *
      * Construct method
      */
     public function __construct($serializerType)
@@ -40,9 +40,9 @@ class SerializerFactory
 
     /**
      * Generate new Serializer
-     * 
+     *
      * @todo Cache this process
-     * 
+     *
      * @return SerializerInterface Generated Serializer
      */
     public function get()

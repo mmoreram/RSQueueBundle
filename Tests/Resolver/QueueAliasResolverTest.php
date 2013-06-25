@@ -2,7 +2,7 @@
 
 /**
  * RSQueueBundle for Symfony2
- * 
+ *
  * Marc Morera 2013
  */
 
@@ -19,7 +19,7 @@ class QueueAliasResolverTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @var Array
-     * 
+     *
      * Queue aliases setup
      */
     private $queueAliases = array(
@@ -49,11 +49,11 @@ class QueueAliasResolverTest extends \PHPUnit_Framework_TestCase
         try {
 
             $queueAliasResolver->check('myqueue3');
-        } catch(InvalidAliasException $expected) {
+        } catch (InvalidAliasException $expected) {
 
             return;
         }
-        
+
         $this->fail('An expected InvalidAliasException exception has not been raised.');
     }
 

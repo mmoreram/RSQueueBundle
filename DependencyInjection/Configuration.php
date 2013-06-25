@@ -2,7 +2,7 @@
 
 /**
  * RSQueueBundle for Symfony2
- * 
+ *
  * Marc Morera 2013
  */
 
@@ -29,7 +29,7 @@ class Configuration implements ConfigurationInterface
         $rootNode
             ->addDefaultsIfNotSet()
             ->children()
-                ->arrayNode('queue_aliases')
+                ->arrayNode('queues')
                     ->prototype('scalar')->end()
                 ->end()
                 ->scalarNode('serializer')

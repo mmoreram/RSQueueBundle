@@ -2,7 +2,7 @@
 
 /**
  * RSQueueBundle for Symfony2
- * 
+ *
  * Marc Morera 2013
  */
 
@@ -11,12 +11,15 @@ namespace Mmoreram\RSQueueBundle\Event\Abstracts;
 use Mmoreram\RSQueueBundle\Event\Abstracts\AbstractRSEvent;
 
 
+/**
+ * Abstract queue event
+ */
 abstract class AbstractRSQueueEvent extends AbstractRSEvent
 {
 
     /**
      * @var String
-     * 
+     *
      * Queue alias
      */
     protected $queueAlias;
@@ -24,7 +27,7 @@ abstract class AbstractRSQueueEvent extends AbstractRSEvent
 
     /**
      * @var String
-     * 
+     *
      * Real queue name
      */
     protected $queueName;
@@ -32,7 +35,7 @@ abstract class AbstractRSQueueEvent extends AbstractRSEvent
 
     /**
      * Construct method
-     * 
+     *
      * @param Mixed  $payload    Payload
      * @param string $queueAlias Queue alias
      * @param string $queueName  Queue name
@@ -49,7 +52,7 @@ abstract class AbstractRSQueueEvent extends AbstractRSEvent
 
     /**
      * Return queue alias
-     * 
+     *
      * @return string Queue alias
      */
     public function getQueueAlias()
@@ -60,7 +63,7 @@ abstract class AbstractRSQueueEvent extends AbstractRSEvent
 
     /**
      * Return queue name
-     * 
+     *
      * @return string Queue name
      */
     public function getQueueName()

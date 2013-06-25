@@ -2,7 +2,7 @@
 
 /**
  * RSQueueBundle for Symfony2
- * 
+ *
  * Marc Morera 2013
  */
 
@@ -19,12 +19,12 @@ class Publisher extends AbstractService
 {
     /**
      * Enqueues payload inside desired queue
-     * 
-     * @param String $channelAlias Name of channel to publish payload
+     *
      * @param Mixed  $payload      Data to publish
-     * 
+     * @param String $channelAlias Name of channel to publish payload
+     *
      * @return Producer self Object
-     * 
+     *
      * @throws InvalidAliasException If any alias is not defined
      */
     public function publish($payload, $channelAlias)
@@ -32,7 +32,7 @@ class Publisher extends AbstractService
         $channel = $this->queueAliasResolver->get($channelAlias);
 
         $this->redis->publish(
-            $channel, 
+            $channel,
             $this->serializer->apply($payload)
         );
 

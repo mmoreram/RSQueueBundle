@@ -2,7 +2,7 @@
 
 /**
  * RSQueueBundle for Symfony2
- * 
+ *
  * Marc Morera 2013
  */
 
@@ -17,14 +17,14 @@ use Mmoreram\RSQueueBundle\Event\RSQueueSubscriberEvent;
 
 
 /**
- *
+ * PSubscriber abstract command
  */
 abstract class PSubscriberCommand extends ContainerAwareCommand
 {
 
     /**
      * @var array
-     * 
+     *
      * Array of channel patterns with their methods
      */
     private $patterns;
@@ -32,19 +32,19 @@ abstract class PSubscriberCommand extends ContainerAwareCommand
 
     /**
      * Adds a pattern to subscribe on
-     * 
+     *
      * Checks if channel is defined in config
      * Checks if channel assigned method exists and is callable
-     * 
+     *
      * @param String $pattern       Pattern
      * @param String $patternAlias  Pattern alias
      * @param String $patternMethod Pattern method
-     * 
+     *
      * @return SubscriberCommand self Object
-     * 
+     *
      * @throws MethodNotFoundException If any method is not callable
      */
-    protected function addPattern($pattern, $patternMethod, $patternMethod)
+    protected function addPattern($pattern, $patternAlias, $patternMethod)
     {
         if (!is_callable(array($this, $patternMethod))) {
 
@@ -62,17 +62,17 @@ abstract class PSubscriberCommand extends ContainerAwareCommand
 
     /**
      * Execute code.
-     * 
+     *
      * @param InputInterface  $input  An InputInterface instance
      * @param OutputInterface $output An OutputInterface instance
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $this->preExecute();
-        
+
         $patterns = $this->patterns;
 
-        $this   
+        $this
             ->getContainer()
             ->get('snc_redis.default')
             ->psubscribe($this->patterns, function($redis, $pattern, $channel, $payload) use ($patterns) {
@@ -89,7 +89,7 @@ abstract class PSubscriberCommand extends ContainerAwareCommand
 
                 /**
                  * All custom methods must have these parameters
-                 * 
+                 *
                  * Mixed  $payload      Payload
                  * String $patternAlias Pattern alias
                  * String $channel      Channel name

@@ -2,7 +2,7 @@
 
 /**
  * RSChannelBundle for Symfony2
- * 
+ *
  * Marc Morera 2013
  */
 
@@ -18,15 +18,15 @@ class RSQueuePublisherEventTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @var RSChannelPublisherEvent
-     * 
+     *
      * Object to test
      */
-    private $RSQueuePublisherEvent;
+    private $rsqueuePublisherEvent;
 
 
     /**
      * @var string
-     * 
+     *
      * Payload for testing
      */
     private $payload = '{"foo":"foodata","engonga":"someengongadata"}';
@@ -34,7 +34,7 @@ class RSQueuePublisherEventTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @var string
-     * 
+     *
      * Channel Alias
      */
     private $channelAlias = 'channelAlias';
@@ -42,7 +42,7 @@ class RSQueuePublisherEventTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @var string
-     * 
+     *
      * Channel Name
      */
     private $channelName = 'channelName';
@@ -50,7 +50,7 @@ class RSQueuePublisherEventTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @var Redis
-     * 
+     *
      * Redis mock instance
      */
     private $redis;
@@ -63,7 +63,7 @@ class RSQueuePublisherEventTest extends \PHPUnit_Framework_TestCase
     {
 
         $this->redis = $this->getMock('Predis\Client');
-        $this->RSQueuePublisherEvent = new RSQueuePublisherEvent($this->payload, $this->channelAlias, $this->channelName, $this->redis);
+        $this->rsqueuePublisherEvent = new RSQueuePublisherEvent($this->payload, $this->channelAlias, $this->channelName, $this->redis);
     }
 
 
@@ -72,7 +72,7 @@ class RSQueuePublisherEventTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetPayload()
     {
-        $this->assertEquals($this->RSQueuePublisherEvent->getPayload(), $this->payload);
+        $this->assertEquals($this->rsqueuePublisherEvent->getPayload(), $this->payload);
     }
 
 
@@ -81,7 +81,7 @@ class RSQueuePublisherEventTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetChannelName()
     {
-        $this->assertEquals($this->RSQueuePublisherEvent->getChannelName(), $this->channelName);
+        $this->assertEquals($this->rsqueuePublisherEvent->getChannelName(), $this->channelName);
     }
 
 
@@ -90,7 +90,7 @@ class RSQueuePublisherEventTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetChannelAlias()
     {
-        $this->assertEquals($this->RSQueuePublisherEvent->getChannelAlias(), $this->channelAlias);
+        $this->assertEquals($this->rsqueuePublisherEvent->getChannelAlias(), $this->channelAlias);
     }
 
 
@@ -99,6 +99,6 @@ class RSQueuePublisherEventTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetRedis()
     {
-        $this->assertSame($this->RSQueuePublisherEvent->getRedis(), $this->redis);
+        $this->assertSame($this->rsqueuePublisherEvent->getRedis(), $this->redis);
     }
 }

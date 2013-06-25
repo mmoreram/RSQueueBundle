@@ -2,7 +2,7 @@
 
 /**
  * RSQueueBundle for Symfony2
- * 
+ *
  * Marc Morera 2013
  */
 
@@ -24,7 +24,7 @@ abstract class SubscriberCommand extends ContainerAwareCommand
 
     /**
      * @var array
-     * 
+     *
      * Array of queue aliases with their methods
      */
     private $channels;
@@ -32,15 +32,15 @@ abstract class SubscriberCommand extends ContainerAwareCommand
 
     /**
      * Adds a queue to subscribe on
-     * 
+     *
      * Checks if queue is defined in config
      * Checks if queue assigned method exists and is callable
-     * 
+     *
      * @param String $channelAlias  Queue alias
      * @param String $channelMethod Queue method
-     * 
+     *
      * @return SubscriberCommand self Object
-     * 
+     *
      * @throws InvalidAliasException   If any alias is not defined
      * @throws MethodNotFoundException If any method is not callable
      */
@@ -64,17 +64,17 @@ abstract class SubscriberCommand extends ContainerAwareCommand
 
     /**
      * Execute code.
-     * 
+     *
      * @param InputInterface  $input  An InputInterface instance
      * @param OutputInterface $output An OutputInterface instance
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $this->preExecute();
-        
+
         $channels = $this->channels;
 
-        $this   
+        $this
             ->getContainer()
             ->get('snc_redis.default')
             ->subscribe($channelsNames, function($redis, $channel, $payload) use ($channels) {
@@ -90,7 +90,7 @@ abstract class SubscriberCommand extends ContainerAwareCommand
 
                 /**
                  * All custom methods must have these parameters
-                 * 
+                 *
                  * Mixed  $payload    Payload
                  * String $channelAlias Queue alias
                  * String $channel      Queue name

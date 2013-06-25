@@ -2,7 +2,7 @@
 
 /**
  * RSQueueBundle for Symfony2
- * 
+ *
  * Marc Morera 2013
  */
 
@@ -11,12 +11,15 @@ namespace Mmoreram\RSQueueBundle\Event\Abstracts;
 use Mmoreram\RSQueueBundle\Event\Abstracts\AbstractRSEvent;
 
 
+/**
+ * Abstract channel event
+ */
 abstract class AbstractRSChannelEvent extends AbstractRSEvent
 {
 
     /**
      * @var String
-     * 
+     *
      * Channel alias
      */
     protected $channelAlias;
@@ -24,7 +27,7 @@ abstract class AbstractRSChannelEvent extends AbstractRSEvent
 
     /**
      * @var String
-     * 
+     *
      * Real channel name
      */
     protected $channelName;
@@ -32,7 +35,7 @@ abstract class AbstractRSChannelEvent extends AbstractRSEvent
 
     /**
      * Construct method
-     * 
+     *
      * @param Mixed  $payload      Payload
      * @param string $channelAlias Channel alias
      * @param string $channelName  Channel name
@@ -49,7 +52,7 @@ abstract class AbstractRSChannelEvent extends AbstractRSEvent
 
     /**
      * Return channel alias
-     * 
+     *
      * @return string Channel alias
      */
     public function getChannelAlias()
@@ -60,7 +63,7 @@ abstract class AbstractRSChannelEvent extends AbstractRSEvent
 
     /**
      * Return channel name
-     * 
+     *
      * @return string Channel name
      */
     public function getChannelName()
