@@ -10,6 +10,8 @@ namespace Mmoreram\RSQueueBundle\Serializer\Interfaces;
 
 /**
  * Interface for any kind of serialization
+ *
+ * This class must implements two methods, one for serialize data and another for unserialize it.
  */
 interface SerializerInterface
 {
