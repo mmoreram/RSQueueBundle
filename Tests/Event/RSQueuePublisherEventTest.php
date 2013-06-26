@@ -25,11 +25,22 @@ class RSQueuePublisherEventTest extends \PHPUnit_Framework_TestCase
 
 
     /**
-     * @var string
+     * @var array
      *
      * Payload for testing
      */
-    private $payload = '{"foo":"foodata","engonga":"someengongadata"}';
+    private $payload = array(
+        'foo'   =>  'foodata',
+        'engonga'   =>  'someengongadata'
+    );
+
+
+    /**
+     * @var string
+     *
+     * Payload serialized
+     */
+    private $payloadSerialized = '{"foo":"foodata","engonga":"someengongadata"}';
 
 
     /**
@@ -63,7 +74,7 @@ class RSQueuePublisherEventTest extends \PHPUnit_Framework_TestCase
     {
 
         $this->redis = $this->getMock('Predis\Client');
-        $this->rsqueuePublisherEvent = new RSQueuePublisherEvent($this->payload, $this->channelAlias, $this->channelName, $this->redis);
+        $this->rsqueuePublisherEvent = new RSQueuePublisherEvent($this->payload, $this->payloadSerialized, $this->channelAlias, $this->channelName, $this->redis);
     }
 
 
@@ -73,6 +84,15 @@ class RSQueuePublisherEventTest extends \PHPUnit_Framework_TestCase
     public function testGetPayload()
     {
         $this->assertEquals($this->rsqueuePublisherEvent->getPayload(), $this->payload);
+    }
+
+
+    /**
+     * Testing payload serialized getter
+     */
+    public function testGetPayloadSerialized()
+    {
+        $this->assertEquals($this->rsqueuePublisherEvent->getPayloadSerialized(), $this->payloadSerialized);
     }
 
 

@@ -30,16 +30,17 @@ class Producer extends AbstractService
     public function produce($payload, $queueAlias)
     {
         $queue = $this->queueAliasResolver->get($queueAlias);
+        $payloadSerialized = $this->serializer->apply($payload);
 
         $this->redis->rpush(
             $queue,
-            $this->serializer->apply($payload)
+            $payloadSerialized
         );
 
         /**
          * Dispatching producer event...
          */
-        $producerEvent = new RSQueueProducerEvent($payload, $queueAlias, $queue, $this->redis);
+        $producerEvent = new RSQueueProducerEvent($payload, $payloadSerialized, $queueAlias, $queue, $this->redis);
         $this->eventDispatcher->dispatch(RSQueueEvents::RSQUEUE_PRODUCER, $producerEvent);
 
         return $this;

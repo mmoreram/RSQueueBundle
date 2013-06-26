@@ -17,7 +17,7 @@ services:
 
     rs_queue.resolver.queuealias:
         class: %rs_queue.resolver.queuealias.class%
-        arguments: 
+        arguments:
             queueAliases: %rs_queue.queues%
 
     rs_queue.service:
@@ -39,3 +39,11 @@ services:
     rs_queue.publisher:
         class: Mmoreram\RSQueueBundle\Services\Publisher
         parent: rs_queue.service
+
+    rs_queue.data_collector:
+        class: Mmoreram\RSQueueBundle\Collector\RSQueueCollector
+        tags:
+            - { name: data_collector, template: "RSQueueBundle:Collector:rsqueue", id: "rsqueue_collector" }
+            - { name: kernel.event_listener, event: rsqueue.producer, method: onProducerAction }
+            - { name: kernel.event_listener, event: rsqueue.publisher, method: onPublisherAction }
+            - { name: kernel.event_listener, event: rsqueue.consumer, method: onConsumerAction }

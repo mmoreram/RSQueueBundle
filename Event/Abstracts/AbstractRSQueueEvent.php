@@ -36,14 +36,15 @@ abstract class AbstractRSQueueEvent extends AbstractRSEvent
     /**
      * Construct method
      *
-     * @param Mixed  $payload    Payload
-     * @param string $queueAlias Queue alias
-     * @param string $queueName  Queue name
-     * @param Redis  $redis      Redis instance
+     * @param Mixed  $payload           Payload
+     * @param String $payloadSerialized Payload serialized
+     * @param string $queueAlias        Queue alias
+     * @param string $queueName         Queue name
+     * @param Redis  $redis             Redis instance
      */
-    public function __construct($payload, $queueAlias, $queueName, $redis)
+    public function __construct($payload, $payloadSerialized, $queueAlias, $queueName, $redis)
     {
-        parent::__construct($payload, $redis);
+        parent::__construct($payload, $payloadSerialized, $redis);
 
         $this->queueAlias = $queueAlias;
         $this->queueName = $queueName;

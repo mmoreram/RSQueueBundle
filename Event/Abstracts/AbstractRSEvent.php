@@ -27,6 +27,14 @@ abstract class AbstractRSEvent extends Event
 
 
     /**
+     * @var String
+     *
+     * Payload serialized
+     */
+    protected $payloadSerialized;
+
+
+    /**
      * @var Redis
      *
      * Redis instance
@@ -40,9 +48,10 @@ abstract class AbstractRSEvent extends Event
      * @param Mixed       $payload Payload
      * @param RedisClient $redis   Redis instance
      */
-    public function __construct($payload, RedisClient $redis)
+    public function __construct($payload, $payloadSerialized, RedisClient $redis)
     {
         $this->payload = $payload;
+        $this->payloadSerialized = $payloadSerialized;
         $this->redis = $redis;
     }
 
@@ -55,6 +64,17 @@ abstract class AbstractRSEvent extends Event
     public function getPayload()
     {
         return $this->payload;
+    }
+
+
+    /**
+     * Return payload serialized
+     *
+     * @return string
+     */
+    public function getPayloadSerialized()
+    {
+        return $this->payloadSerialized;
     }
 
 

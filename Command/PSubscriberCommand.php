@@ -71,18 +71,20 @@ abstract class PSubscriberCommand extends ContainerAwareCommand
         $this->preExecute();
 
         $patterns = $this->patterns;
+        $serializer = $this->getContainer()->get('rs_queue.serializer');
 
         $this
             ->getContainer()
             ->get('snc_redis.default')
-            ->psubscribe($this->patterns, function($redis, $pattern, $channel, $payload) use ($patterns) {
+            ->psubscribe($this->patterns, function($redis, $pattern, $channel, $payloadSerialized) use ($patterns, $serializer) {
 
                 $patternAlias = $patterns[$pattern]['alias'];
+                $payload = $serializer->revert($payloadSerialized);
 
                 /**
                  * Dispatching subscriber event...
                  */
-                $pSubscriberEvent = new RSQueueSubscriberEvent($payload, $patternAlias, $channel, $redis);
+                $pSubscriberEvent = new RSQueueSubscriberEvent($payload, $payloadSerialized, $patternAlias, $channel, $redis);
                 $this->eventDispatcher->dispatch(RSQueueEvents::RSQUEUE_PSUBSCRIBER, $pSubscriberEvent);
 
                 $method = $patterns[$pattern]['method'];

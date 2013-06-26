@@ -23,8 +23,8 @@ class RSQueueExtension extends Extension
         $config = $this->processConfiguration($configuration, $configs);
 
         $container->setParameter(
-            'rs_queue.queue_aliases',
-            $config['queue_aliases']
+            'rs_queue.queues',
+            $config['queues']
         );
 
         $container->setParameter(

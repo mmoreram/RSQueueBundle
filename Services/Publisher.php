@@ -30,16 +30,17 @@ class Publisher extends AbstractService
     public function publish($payload, $channelAlias)
     {
         $channel = $this->queueAliasResolver->get($channelAlias);
+        $payloadSerialized = $this->serializer->apply($payload);
 
         $this->redis->publish(
             $channel,
-            $this->serializer->apply($payload)
+            $payloadSerialized
         );
 
         /**
          * Dispatching publisher event...
          */
-        $publisherEvent = new RSQueuePublisherEvent($payload, $channelAlias, $channel, $this->redis);
+        $publisherEvent = new RSQueuePublisherEvent($payload, $payloadSerialized, $channelAlias, $channel, $this->redis);
         $this->eventDispatcher->dispatch(RSQueueEvents::RSQUEUE_PUBLISHER, $publisherEvent);
 
         return $this;

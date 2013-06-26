@@ -73,28 +73,30 @@ abstract class SubscriberCommand extends ContainerAwareCommand
         $this->preExecute();
 
         $channels = $this->channels;
+        $serializer = $this->getContainer()->get('rs_queue.serializer');
 
         $this
             ->getContainer()
             ->get('snc_redis.default')
-            ->subscribe($channelsNames, function($redis, $channel, $payload) use ($channels) {
+            ->subscribe($channelsNames, function($redis, $channel, $payload) use ($channels, $serializer) {
 
                 $channelAlias = $channels[$channel]['alias'];
                 $channelMethod = $channels[$channel]['method'];
+                $payload = $serializer->revert($payloadSerialized);
 
                 /**
                  * Dispatching subscriber event...
                  */
-                $subscriberEvent = new RSQueueSubscriberEvent($payload, $channelAlias, $channel, $redis);
+                $subscriberEvent = new RSQueueSubscriberEvent($payload, $payloadSerialized, $channelAlias, $channel, $redis);
                 $this->eventDispatcher->dispatch(RSQueueEvents::RSQUEUE_SUBSCRIBER, $subscriberEvent);
 
                 /**
                  * All custom methods must have these parameters
                  *
-                 * Mixed  $payload    Payload
+                 * Mixed  $payload      Payload
                  * String $channelAlias Queue alias
                  * String $channel      Queue name
-                 * Redis  $redis      Redis instance
+                 * Redis  $redis        Redis instance
                  */
                 $this->$method($payload, $channelAlias, $channel, $redis);
             });

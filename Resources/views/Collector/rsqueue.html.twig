@@ -1,0 +1,110 @@
+{% extends 'WebProfilerBundle:Profiler:layout.html.twig' %}
+
+{% block toolbar %}
+    {# the web debug toolbar content #}
+    {% set icon %}
+        <img width="20" height="28" alt="RSQueues" style="border-width: 0; vertical-align: middle" src="{{ asset('bundles/rsqueue/images/rsqueue.png') }}"/>
+        <span class="sf-toolbar-status{% if collector.total > 0 %} sf-toolbar-status-red{% endif %}">{{ collector.total }}</span>
+    {% endset %}
+    {% set text %}
+        <div class="sf-toolbar-info-piece">
+            <b>Producer</b>
+            <span>{{ collector.producer|length }}</span>
+        </div>
+        <div class="sf-toolbar-info-piece">
+            <b>Publisher</b>
+            <span>{{ collector.publisher|length }}</span>
+        </div>
+        <div class="sf-toolbar-info-piece">
+            <b>Consumer</b>
+            <span>{{ collector.consumer|length }}</span>
+        </div>
+    {% endset %}
+    {% include 'WebProfilerBundle:Profiler:toolbar_item.html.twig' with { 'link': profiler_url } %}
+{% endblock %}
+
+{% block menu %}
+    <span class="label">
+        <span class="icon"><img src="{{ asset('bundles/rsqueue/images/rsqueue_big.png') }}" alt="RSQueues" /></span>
+        <strong>RSQueue</strong>
+        <span class="count">
+            <span>{{ collector.total }}</span>
+        </span>
+    </span>
+{% endblock %}
+
+{% block panel %}
+    {# the panel content #}
+
+    <h2>RSQueue</h2>
+    {% if collector.total == 0 %}
+        <p><em>No queue interaction</em></p>
+    {% else %}
+        {% if collector.producer|length > 0 %}
+            <strong>Producer</strong>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Queue alias</th>
+                        <th>Queue name</th>
+                        <th>Payload</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for line in collector.producer %}
+                        <tr>
+                            <td>{{ line.alias }}</td>
+                            <td>{{ line.queue }}</td>
+                            <td>{{ line.payload }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+
+        {% if collector.publisher|length > 0 %}
+            <strong>Publisher</strong>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Queue alias</th>
+                        <th>Queue name</th>
+                        <th>Payload</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for line in collector.publisher %}
+                        <tr>
+                            <td>{{ line.alias }}</td>
+                            <td>{{ line.queue }}</td>
+                            <td>{{ line.payload }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+
+        {% if collector.consumer|length > 0 %}
+            <strong>Consumer</strong>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Queue alias</th>
+                        <th>Queue name</th>
+                        <th>Payload</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for line in collector.consumer %}
+                        <tr>
+                            <td>{{ line.alias }}</td>
+                            <td>{{ line.queue }}</td>
+                            <td>{{ line.payload }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+
+    {% endif %}
+{% endblock %}
