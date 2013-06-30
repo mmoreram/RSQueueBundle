@@ -29,7 +29,7 @@ class Producer extends AbstractService
      */
     public function produce($payload, $queueAlias)
     {
-        $queue = $this->queueAliasResolver->get($queueAlias);
+        $queue = $this->queueAliasResolver->getQueue($queueAlias);
         $payloadSerialized = $this->serializer->apply($payload);
 
         $this->redis->rpush(

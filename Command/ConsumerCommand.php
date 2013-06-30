@@ -8,46 +8,46 @@
 
 namespace Mmoreram\RSQueueBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Mmoreram\RSQueueBundle\Command\Abstracts\AbstractRSQueueCommand;
 
 
 /**
- * Command for executing a parser
+ * Abstract consumer command
+ *
+ * Events :
+ *
+ *     Each time a consumer recieves a new element, this throws a new
+ *     rsqueue.consumer Event
+ *
+ * Exceptions :
+ *
+ *     If any of inserted queues or channels is not defined in config file
+ *     as an alias, a new InvalidAliasException will be thrown
+ *
+ *     Likewise, if any ot inserted associated methods does not exist or is not
+ *     callable, a new MethodNotFoundException will be thrown
  */
-abstract class ConsumerCommand extends ContainerAwareCommand
+abstract class ConsumerCommand extends AbstractRSQueueCommand
 {
 
     /**
-     * @var string
+     * Adds a queue to subscribe on
      *
-     * Queue name to consume from
+     * Checks if queue assigned method exists and is callable
+     *
+     * @param String $queueAlias  Queue alias
+     * @param String $queueMethod Queue method
+     *
+     * @return SubscriberCommand self Object
+     *
+     * @throws MethodNotFoundException If any method is not callable
      */
-    private $queueAlias;
-
-
-    /**
-     * Set queue alias to consume from
-     *
-     * @param String $queueAlias Queue alias
-     *
-     * @return ConsumerCommand self Object
-     *
-     * @throws InvalidAliasException If any alias is not defined
-     */
-    protected function setQueueAlias($queueAlias)
+    protected function addQueue($queueAlias, $queueMethod)
     {
-        $this
-            ->getContainer()
-            ->get('rsqueue.resolver.queuealias')
-            ->check($queueAlias);
-
-        $this->queueAlias = $queueAlias;
-
-        return $this;
+        return $this->addMethod($queueAlias, $queueMethod);
     }
 
 
@@ -58,6 +58,10 @@ abstract class ConsumerCommand extends ContainerAwareCommand
      * * timeout ( default: 0)
      * * iterations ( default: 0)
      * * sleep ( default: 0)
+     *
+     * Important !!
+     *
+     * All Commands with this consumer behaviour must call parent() configure method
      */
     protected function configure()
     {
@@ -103,20 +107,33 @@ abstract class ConsumerCommand extends ContainerAwareCommand
      *
      * @param InputInterface  $input  An InputInterface instance
      * @param OutputInterface $output An OutputInterface instance
+     *
+     * @throws InvalidAliasException If any alias is not defined
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->preExecute();
+        $this->define();
 
         $consumer = $this->getContainer()->get('rsqueue.consumer');
         $iterations = (int) $input->getOption('iterations');
         $timeout = (int) $input->getOption('timeout');
         $sleep = (int) $input->getOption('sleep');
         $iterationsDone = 0;
+        $queueAliases = array_keys($this->methods);
 
-        while ($payload = $consumer->consume($this->queueAlias, $timeout)) {
+        while ($response = $consumer->consume($queueAliases, $timeout)) {
 
-            $this->consume($input, $output, $payload);
+            list($queueAlias, $payload) = $response;
+            $method = $this->methods[$queueAlias];
+
+            /**
+             * All custom methods must have these parameters
+             *
+             * InputInterface  $input   An InputInterface instance
+             * OutputInterface $output  An OutputInterface instance
+             * Mixed           $payload Payload
+             */
+            $this->$method($input, $output, $payload);
 
             if ( ($iterations > 0) && (++$iterationsDone >= $iterations) ) {
 
@@ -126,20 +143,4 @@ abstract class ConsumerCommand extends ContainerAwareCommand
             sleep($sleep);
         }
     }
-
-
-    /**
-     * Configure before Execute
-     */
-    abstract protected function preExecute();
-
-
-    /**
-     * Consume method with retrieved queue value
-     *
-     * @param InputInterface  $input   An InputInterface instance
-     * @param OutputInterface $output  An OutputInterface instance
-     * @param Mixed           $payload Data retrieved and unserialized from queue
-     */
-    abstract protected function consume(InputInterface $input, OutputInterface $output, $payload);
 }

@@ -8,55 +8,45 @@
 
 namespace Mmoreram\RSQueueBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Mmoreram\RSQueueBundle\Event\RSQueueSubscriberEvent;
+use Mmoreram\RSQueueBundle\Command\Abstracts\AbstractRSQueueCommand;
 
 
 /**
- * PSubscriber abstract command
+ * Abstract PSubscriber command
+ *
+ * Events :
+ *
+ * Events :
+ *
+ *     Each time a psubscriber recieves a new element, this throws a new
+ *     rsqueue.psubscriber Event
+ *
+ * Exceptions :
+ *
+ *     If any ot inserted associated methods does not exist or is not
+ *     callable, a new MethodNotFoundException will be thrown
  */
-abstract class PSubscriberCommand extends ContainerAwareCommand
+abstract class PSubscriberCommand extends AbstractRSQueueCommand
 {
-
-    /**
-     * @var array
-     *
-     * Array of channel patterns with their methods
-     */
-    private $patterns;
-
 
     /**
      * Adds a pattern to subscribe on
      *
-     * Checks if channel is defined in config
      * Checks if channel assigned method exists and is callable
      *
      * @param String $pattern       Pattern
-     * @param String $patternAlias  Pattern alias
      * @param String $patternMethod Pattern method
      *
      * @return SubscriberCommand self Object
      *
      * @throws MethodNotFoundException If any method is not callable
      */
-    protected function addPattern($pattern, $patternAlias, $patternMethod)
+    protected function addPattern($pattern, $patternMethod)
     {
-        if (!is_callable(array($this, $patternMethod))) {
-
-            throw new methodNotExistsException($patternAlias);
-        }
-
-        $this->patterns[$pattern] = array(
-            'alias'     =>  $patternAlias,
-            'method'    =>  $patternMethod,
-        );
-
-        return $this;
+        return $this->addMethod($pattern, $patternMethod);
     }
 
 
@@ -68,42 +58,30 @@ abstract class PSubscriberCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->preExecute();
+        $this->define();
 
-        $patterns = $this->patterns;
         $serializer = $this->getContainer()->get('rs_queue.serializer');
+        $psubscriberCommand = $this;
+        $methods = $this->methods;
+
+        $patterns = array_keys($methods);
 
         $this
             ->getContainer()
-            ->get('snc_redis.default')
-            ->psubscribe($this->patterns, function($redis, $pattern, $channel, $payloadSerialized) use ($patterns, $serializer) {
+            ->get('rs_queue.redis')
+            ->psubscribe($patterns, function($redis, $pattern, $channel, $payloadSerialized) use ($methods, $psubscriberCommand, $serializer, $input, $output) {
 
-                $patternAlias = $patterns[$pattern]['alias'];
                 $payload = $serializer->revert($payloadSerialized);
-
-                /**
-                 * Dispatching subscriber event...
-                 */
-                $pSubscriberEvent = new RSQueueSubscriberEvent($payload, $payloadSerialized, $patternAlias, $channel, $redis);
-                $this->eventDispatcher->dispatch(RSQueueEvents::RSQUEUE_PSUBSCRIBER, $pSubscriberEvent);
-
-                $method = $patterns[$pattern]['method'];
+                $method = $methods[$pattern];
 
                 /**
                  * All custom methods must have these parameters
                  *
-                 * Mixed  $payload      Payload
-                 * String $patternAlias Pattern alias
-                 * String $channel      Channel name
-                 * Redis  $redis        Redis instance
+                 * InputInterface  $input   An InputInterface instance
+                 * OutputInterface $output  An OutputInterface instance
+                 * Mixed           $payload Payload
                  */
-                $this->$method($payload, $patternAlias, $channel, $redis);
+                $psubscriberCommand->$method($input, $output, $payload);
             });
     }
-
-
-    /**
-     * Configure before Execute
-     */
-    abstract protected function preExecute();
 }

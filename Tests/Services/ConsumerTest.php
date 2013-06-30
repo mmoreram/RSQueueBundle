@@ -24,17 +24,17 @@ class ConsumerTest extends \PHPUnit_Framework_TestCase
     {
         $queueAlias = 'alias';
         $queue = 'queue';
-        $timeout = 'timeout';
+        $timeout = 0;
         $payload = array('engonga');
 
         $redis = $this
-            ->getMock('Predis\Client', array('blpop'));
+            ->getMock('\Redis', array('blPop'));
 
         $redis
             ->expects($this->once())
-            ->method('blpop')
+            ->method('blPop')
             ->with($this->equalTo($queue), $this->equalTo($timeout))
-            ->will($this->returnValue(array('queue', json_encode($payload))));
+            ->will($this->returnValue(array($queue, json_encode($payload))));
 
         $serializer = $this
             ->getMock('Mmoreram\RSQueueBundle\Serializer\JsonSerializer', array('revert'));
@@ -47,15 +47,21 @@ class ConsumerTest extends \PHPUnit_Framework_TestCase
 
         $queueAliasResolver = $this
             ->getMockBuilder('Mmoreram\RSQueueBundle\Resolver\QueueAliasResolver')
-            ->setMethods(array('get'))
+            ->setMethods(array('getQueue', 'getQueueAlias'))
             ->disableOriginalConstructor()
             ->getMock();
 
         $queueAliasResolver
             ->expects($this->once())
-            ->method('get')
+            ->method('getQueue')
             ->with($this->equalTo($queueAlias))
             ->will($this->returnValue($queue));
+
+        $queueAliasResolver
+            ->expects($this->once())
+            ->method('getQueueAlias')
+            ->with($this->equalTo($queue))
+            ->will($this->returnValue($queueAlias));
 
         $eventDispatcher = $this
             ->getMock('Symfony\Component\EventDispatcher\EventDispatcher', array('dispatch'));
@@ -65,8 +71,9 @@ class ConsumerTest extends \PHPUnit_Framework_TestCase
             ->method('dispatch');
 
         $consumer = new Consumer($eventDispatcher, $redis, $queueAliasResolver, $serializer);
-        $payloadReturned = $consumer->consume($queueAlias, $timeout);
+        list($givenQueueAlias, $givenPayload) = $consumer->consume($queueAlias, $timeout);
 
-        $this->assertEquals($payload, $payloadReturned);
+        $this->assertEquals($queueAlias, $givenQueueAlias);
+        $this->assertEquals($payload, $givenPayload);
     }
 }

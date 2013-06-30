@@ -22,33 +22,44 @@ class QueueAliasResolverTest extends \PHPUnit_Framework_TestCase
      *
      * Queue aliases setup
      */
-    private $queueAliases = array(
+    private $queues = array(
         'myqueue1'  =>  'queues.myqueue1',
         'myqueue2'  =>  'queues.myqueue2',
     );
 
+
     /**
-     * Tests get method
+     * Tests get queue method
      */
-    public function testGet()
+    public function testGetQueues()
     {
-        $queueAliasResolver = new QueueAliasResolver($this->queueAliases);
-        $this->assertEquals($queueAliasResolver->get('myqueue1'), $this->queueAliases['myqueue1']);
-        $this->assertEquals($queueAliasResolver->get('myqueue2'), $this->queueAliases['myqueue2']);
+        $queueAliasResolver = new QueueAliasResolver($this->queues);
+        $this->assertEquals($queueAliasResolver->getQueues(array_keys($this->queues)), array_values($this->queues));
+    }
+
+
+    /**
+     * Tests get queue method
+     */
+    public function testGetQueue()
+    {
+        $queueAliasResolver = new QueueAliasResolver($this->queues);
+        $this->assertEquals($queueAliasResolver->getQueue('myqueue1'), $this->queues['myqueue1']);
+        $this->assertEquals($queueAliasResolver->getQueue('myqueue2'), $this->queues['myqueue2']);
     }
 
 
     /**
      * Test check method
      */
-    public function testCheck()
+    public function testCheckQueue()
     {
-        $queueAliasResolver = new QueueAliasResolver($this->queueAliases);
-        $this->assertEquals($queueAliasResolver->check('myqueue1'), true);
+        $queueAliasResolver = new QueueAliasResolver($this->queues);
+        $this->assertEquals($queueAliasResolver->checkQueue('myqueue1'), true);
 
         try {
 
-            $queueAliasResolver->check('myqueue3');
+            $queueAliasResolver->checkQueue('myqueue3');
         } catch (InvalidAliasException $expected) {
 
             return;
@@ -62,17 +73,8 @@ class QueueAliasResolverTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetQueueAlias()
     {
-        $queueAliasResolver = new QueueAliasResolver($this->queueAliases);
-        $this->assertEquals('myqueue1', $queueAliasResolver->getQueueAlias($this->queueAliases['myqueue1']));
-        $this->assertEquals('myqueue2', $queueAliasResolver->getQueueAlias($this->queueAliases['myqueue2']));
-    }
-
-    /**
-     * Test get queue aliases method
-     */
-    public function testGetQueueAliases()
-    {
-        $queueAliasResolver = new QueueAliasResolver($this->queueAliases);
-        $this->assertEquals($this->queueAliases, $queueAliasResolver->getQueueAliases());
+        $queueAliasResolver = new QueueAliasResolver($this->queues);
+        $this->assertEquals('myqueue1', $queueAliasResolver->getQueueAlias($this->queues['myqueue1']));
+        $this->assertEquals('myqueue2', $queueAliasResolver->getQueueAlias($this->queues['myqueue2']));
     }
 }

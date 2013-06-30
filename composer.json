@@ -12,15 +12,15 @@
         }
     ],
     "require": {
-        "symfony/event-dispatcher": ">=2.2.0",
-        "symfony/framework-bundle": ">=2.2.0",
+        "php": ">=5.3.3",
+        "ext-redis": ">=2.2.3",
+        "symfony/event-dispatcher": ">=2.2.3",
+        "symfony/framework-bundle": ">=2.2.3",
         "doctrine/annotations": "1.0.*@dev",
-        "symfony/console": ">=2.2.0",
-        "symfony/config": ">=2.2.0",
-        "symfony/http-kernel": ">=2.2.0",
-        "symfony/dependency-injection": ">=2.2.0",
-        "snc/redis-bundle": "2.1.x-dev",
-        "predis/predis": "0.8.*@dev"
+        "symfony/console": ">=2.2.3",
+        "symfony/config": ">=2.2.3",
+        "symfony/http-kernel": ">=2.2.3",
+        "symfony/dependency-injection": ">=2.2.3"
     },
     "target-dir": "Mmoreram/RSQueueBundle",
     "autoload": {

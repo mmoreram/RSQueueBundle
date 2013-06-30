@@ -29,7 +29,7 @@ class Publisher extends AbstractService
      */
     public function publish($payload, $channelAlias)
     {
-        $channel = $this->queueAliasResolver->get($channelAlias);
+        $channel = $this->queueAliasResolver->getQueue($channelAlias);
         $payloadSerialized = $this->serializer->apply($payload);
 
         $this->redis->publish(

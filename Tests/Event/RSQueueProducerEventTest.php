@@ -73,7 +73,7 @@ class RSQueueProducerEventTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
 
-        $this->redis = $this->getMock('Predis\Client');
+        $this->redis = $this->getMock('\Redis');
         $this->rsqueueProducerEvent = new RSQueueProducerEvent($this->payload, $this->payloadSerialized, $this->queueAlias, $this->queueName, $this->redis);
     }
 

@@ -20,19 +20,51 @@ class QueueAliasResolver
     /**
      * @var Array
      *
-     * Queue names configured in config file
+     * Queue names. Key is alias, value is queue real name
+     *
+     * This value is set in bundle config file
+     */
+    private $queues;
+
+
+    /**
+     * @var Array
+     *
+     * Queue aliases. Key is queue real name, value is alias
      */
     private $queueAliases;
 
 
     /**
-     * @param Array $queueAliases Queue names array
-     *
      * Construct method
+     *
+     * @param Array $queues Queue names array
      */
-    public function __construct(Array $queueAliases)
+    public function __construct(Array $queues)
     {
-        $this->queueAliases = $queueAliases;
+        $this->queues = $queues;
+        $this->queueAliases = array_flip($queues);
+    }
+
+
+    /**
+     * Given an array of queueAliases, return a valid queueNames array
+     *
+     * @param Array $queueAlias Queue alias array
+     *
+     * @return Array valid queueName array
+     *
+     * @throws InvalidAliasException If any queueAlias is not defined
+     */
+    public function getQueues(Array $queueAlias)
+    {
+        $queues = array();
+        foreach ($queueAlias as $alias) {
+
+            $queues[] = $this->getQueue($alias);
+        }
+
+        return $queues;
     }
 
 
@@ -45,11 +77,11 @@ class QueueAliasResolver
      *
      * @throws InvalidAliasException If queueAlias is not defined
      */
-    public function get($queueAlias)
+    public function getQueue($queueAlias)
     {
-        $this->check($queueAlias);
+        $this->checkQueue($queueAlias);
 
-        return $this->queueAliases[$queueAlias];
+        return $this->queues[$queueAlias];
     }
 
 
@@ -62,15 +94,17 @@ class QueueAliasResolver
      *
      * @throws InvalidAliasException If queueAlias is not defined
      */
-    public function check($queueAlias)
+    public function checkQueue($queueAlias)
     {
-        if (!isset($this->queueAliases[$queueAlias])) {
+        if (!isset($this->queues[$queueAlias])) {
 
             throw new InvalidAliasException;
         }
 
         return true;
     }
+
+
 
 
     /**
@@ -82,17 +116,6 @@ class QueueAliasResolver
      */
     public function getQueueAlias($queue)
     {
-        return array_search($queue, $this->queueAliases);
-    }
-
-
-    /**
-     * Return aliases array
-     *
-     * @return array Aliases
-     */
-    public function getQueueAliases()
-    {
-        return $this->queueAliases;
+        return $this->queueAliases[$queue];
     }
 }

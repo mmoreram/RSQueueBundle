@@ -9,7 +9,7 @@
 namespace Mmoreram\RSQueueBundle\Event\Abstracts;
 
 use Symfony\Component\EventDispatcher\Event;
-use Predis\Client as RedisClient;
+use Redis as RedisClient;
 
 
 /**

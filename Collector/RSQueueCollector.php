@@ -38,7 +38,6 @@ class RSQueueCollector extends DataCollector
 
             'prod'  =>  array(),
             'publ'  =>  array(),
-            'cons'  =>  array(),
             'total' =>  0,
         );
     }
@@ -51,7 +50,7 @@ class RSQueueCollector extends DataCollector
      *
      * @param RSQueueProducerEvent $event Event fired
      *
-     * @param QueueCollector self Object
+     * @return QueueCollector self Object
      */
     public function onProducerAction(RSQueueProducerEvent $event)
     {
@@ -73,7 +72,7 @@ class RSQueueCollector extends DataCollector
      *
      * @param RSQueuePublisherEvent $event Event fired
      *
-     * @param QueueCollector self Object
+     * @return QueueCollector self Object
      */
     public function onPublisherAction(RSQueuePublisherEvent $event)
     {
@@ -82,28 +81,6 @@ class RSQueueCollector extends DataCollector
             'payload'   =>  $event->getPayloadSerialized(),
             'queue'     =>  $event->getChannelName(),
             'alias'     =>  $event->getChannelAlias(),
-        );
-
-        return $this;
-    }
-
-
-    /**
-     * Subscribed to RSQueueConsumer event.
-     *
-     * Add to collect data a new consumer action
-     *
-     * @param RSQueueProducerEvent $event Event fired
-     *
-     * @param QueueCollector self Object
-     */
-    public function onConsumerAction(RSQueueConsumerEvent $event)
-    {
-        $this->data['total']++;
-        $this->data['cons'][] = array(
-            'payload'   =>  $event->getPayloadSerialized(),
-            'queue'     =>  $event->getQueueName(),
-            'alias'     =>  $event->getQueueAlias(),
         );
 
         return $this;
@@ -140,17 +117,6 @@ class RSQueueCollector extends DataCollector
     public function getPublisher()
     {
         return $this->data['publ'];
-    }
-
-
-    /**
-     * Get consumer collection
-     *
-     * @return Array
-     */
-    public function getConsumer()
-    {
-        return $this->data['cons'];
     }
 
 

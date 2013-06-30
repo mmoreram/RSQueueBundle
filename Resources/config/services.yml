@@ -1,6 +1,7 @@
 parameters:
     rs_queue.serializer.factory.class: "Mmoreram\RSQueueBundle\Factory\SerializerFactory"
     rs_queue.serializer.interface: "Mmoreram\RSQueueBundle\SerializerInterface"
+    rs_queue.redis.factory.class: "Mmoreram\RSQueueBundle\Factory\RedisFactory"
     rs_queue.resolver.queuealias.class: "Mmoreram\RSQueueBundle\Resolver\QueueAliasResolver"
 
 services:
@@ -15,6 +16,14 @@ services:
         factory_service: rs_queue.serializer.factory
         factory_method: get
 
+    rs_queue.redis.factory:
+        class: %rs_queue.redis.factory.class%
+
+    rs_queue.redis:
+        class: Redis
+        factory_service: rs_queue.redis.factory
+        factory_method: get
+
     rs_queue.resolver.queuealias:
         class: %rs_queue.resolver.queuealias.class%
         arguments:
@@ -24,7 +33,7 @@ services:
         abstract: true
         arguments:
             eventDispatcher: @event_dispatcher
-            redis: @snc_redis.default
+            redis: @rs_queue.redis
             queueNamesResolver: @rs_queue.resolver.queuealias
             serializer: @rs_queue.serializer
 
@@ -46,4 +55,3 @@ services:
             - { name: data_collector, template: "RSQueueBundle:Collector:rsqueue", id: "rsqueue_collector" }
             - { name: kernel.event_listener, event: rsqueue.producer, method: onProducerAction }
             - { name: kernel.event_listener, event: rsqueue.publisher, method: onPublisherAction }
-            - { name: kernel.event_listener, event: rsqueue.consumer, method: onConsumerAction }

@@ -3,7 +3,7 @@
 {% block toolbar %}
     {# the web debug toolbar content #}
     {% set icon %}
-        <img width="20" height="28" alt="RSQueues" style="border-width: 0; vertical-align: middle" src="{{ asset('bundles/rsqueue/images/rsqueue.png') }}"/>
+        <img width="20" height="28" alt="RSQueues" style="border-width: 0; vertical-align: middle" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAAWCAYAAAAb+hYkAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB90GGhceM6BoDDYAAACZSURBVDjL7ZSxDcIwEEXfj1JQho4yA2SHywSeBTFIZjI7pMgIdKSkOzrLEgqxKZCQ+J3v/O5/F2f4lmRmDhBjPEpaty66ezeO4x2gyer9jkHq51C3A6V+m3JKcRoG33yHJDN7cSpWmx8u86xq6F28fOA/3m/ES6tRoyaEsNQAIYRF7n4GrGA1AFbgKnfvgRNwKIAewO2jP+IJyzUx7olHw64AAAAASUVORK5CYII="/>
         <span class="sf-toolbar-status{% if collector.total > 0 %} sf-toolbar-status-red{% endif %}">{{ collector.total }}</span>
     {% endset %}
     {% set text %}
@@ -15,17 +15,13 @@
             <b>Publisher</b>
             <span>{{ collector.publisher|length }}</span>
         </div>
-        <div class="sf-toolbar-info-piece">
-            <b>Consumer</b>
-            <span>{{ collector.consumer|length }}</span>
-        </div>
     {% endset %}
     {% include 'WebProfilerBundle:Profiler:toolbar_item.html.twig' with { 'link': profiler_url } %}
 {% endblock %}
 
 {% block menu %}
     <span class="label">
-        <span class="icon"><img src="{{ asset('bundles/rsqueue/images/rsqueue_big.png') }}" alt="RSQueues" /></span>
+        <span class="icon"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAAgCAYAAADwvkPPAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB90GGhcgGE0R7gsAAAO6SURBVEjH5ZVNaFxVFMd/5947TpNmdEJDJgacoQnOTDIUdVOKDdNF3ChZiLtAoViF0hYXQhAX3eiiC0lc+FGEIqEoRVy4Km4KgouKpFChYj5IiM6InRbSJq2xnZd57x0XeZlMOzN1dOuFy4PLvf/7/zjnXfhfDCkWiy8B1hhzd2Ji4qepqSmv08PT09PxS5cuvRCG4VMi4jvgMoCILCYSiZeB3zoFSyQST4vILJBX1dAAqCrW2kQul0upqu0ESFVtLpdLWWsTqoqImDqYs9bvTSb3Aa5DYq43mdznrPVVdXth1z3BxmIO2AtsTefzzthmkmEQMLW46AN7bSzmENlFBzDGUPW8zR9v3pybO3786Mzo6OuIbCKiTYlZKzOjoz2zhw7NhmfPfl31vE2zLRAnEbIfBLU3x8dvfpzLHZBY7Pm28YuACH9tbBx4a3z8o7FisWYjDLOjV0QMk5NxY20lOncX1eYJdwGMtRUmJ+MiYuoyd5gJuEOVStep+fn3PywUPgfCNjECmFPz83980d/fIw2+uyhWgHDdueBiNpsDXkTEk1ZY25/4xWz2h3XnyqlaLXwogGhTsJTJVNdv3DgpIqf1cW0DrDv36VIm83b/ykqwc6mRhmijmE0k5Z+GaSyLh5gJ2P3lcjwRBLO3nSuhWm1PTfYkguC7/eVyXMC28swMep47trR0daZQ+BXQVnWGqijIsaWltcMDA0mgnmZdpoJ/JZV6cG5k5IxAGZHrqP7cNEWuC5TPjYycuZJKPVDwm2QCSl9fGIoMAV1A16OePNRWIkP09YXcuqUtZVKpWKt6DWMOA/d2K6EpzCet6jUqFdsos7FobfHOna6TCwufzBQKnyGCtko1Wj+5sOAX+/t7aQygkfkv3d1b5/P5V+7Ba8B9aSEzgu8+n89/82539/eF+/fDJpkKwe10essrlV4VeEN3W6eJmYjgGRPeTqcv6+JivWhdw+1CtSoCm48Ucbsu2KRalcjDXZn1EC5c2Drl3HtfDg19a2CrbZLwxNHV1aun5+e35MiR+nkZGxtTEcEYU0b1nXXnVv90TqxqW1qBiCZ8X3t9fwiRD8IwTEe/fhvZo2ngq6Tvk/T9jh6BHV+NMQrgDh48eGt5eTlZKpX2WGv/9cMbBAGZTMbLZrMbrlgszg0MDKSHh4eficViRh5jeovnjlqtFg4ODv6ey+VKoqongGHg2aiNpE3lt+oEBR4Ay8CKqOpzwD6gD4j/BzAPWAPWRFV7IpC4qhrZ1tkRmKqqiIQRoPc3/K+WHQHWojUAAAAASUVORK5CYII=" alt="RSQueues" /></span>
         <strong>RSQueue</strong>
         <span class="count">
             <span>{{ collector.total }}</span>
@@ -74,28 +70,6 @@
                 </thead>
                 <tbody>
                     {% for line in collector.publisher %}
-                        <tr>
-                            <td>{{ line.alias }}</td>
-                            <td>{{ line.queue }}</td>
-                            <td>{{ line.payload }}</td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        {% endif %}
-
-        {% if collector.consumer|length > 0 %}
-            <strong>Consumer</strong>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Queue alias</th>
-                        <th>Queue name</th>
-                        <th>Payload</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for line in collector.consumer %}
                         <tr>
                             <td>{{ line.alias }}</td>
                             <td>{{ line.queue }}</td>
