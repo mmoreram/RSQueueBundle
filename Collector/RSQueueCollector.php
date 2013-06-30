@@ -135,6 +135,11 @@ class RSQueueCollector extends DataCollector
     }
 
 
+    /**
+     * Return collector name
+     *
+     * @return string Collector name
+     */
     public function getName()
     {
         return 'rsqueue_collector';
