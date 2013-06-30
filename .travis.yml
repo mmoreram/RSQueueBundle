@@ -1,10 +1,18 @@
 language: php
 
 php:
-  - 5.3
-  - 5.4
+    - 5.3
+    - 5.4
+    - 5.5
+
+matrix:
+    allow_failures:
+        - php: 5.5
 
 before_script:
-  - composer install --dev
+    - git clone git://github.com/nicolasff/phpredis.git
+    - cd phpredis && phpize && ./configure && make && sudo make install && cd ..
+    - echo "extension=redis.so" >> `php --ini | grep "Loaded Configuration" | sed -e "s|.*:\s*||"`
+    - composer install --dev
 
 script: phpunit
