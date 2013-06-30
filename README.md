@@ -1,6 +1,8 @@
 #RSQueueBundle for Symfony   [![Build Status](https://secure.travis-ci.org/mmoreram/rsqueue-bundle.png?branch=master)](http://travis-ci.org/mmoreram/rsqueue-bundle)
 ##Simple queuing system based on Redis
 
+<iframe src="http://www.slideshare.net/MarcMorera/slideshelf" width="490px" height="470px" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:none;" allowfullscreen webkitallowfullscreen mozallowfullscreen></iframe>
+
 ###Installing [Redis](http://redis.io)
     wget http://download.redis.io/redis-stable.tar.gz
     tar xvzf redis-stable.tar.gz
@@ -20,7 +22,7 @@ Otherwise composer will alert you.
     cd ..
     echo "extension=redis.so" >> `php --ini | grep "Loaded Configuration" | sed -e "s|.*:\s*||"`
 
-###Installing [RSQueue](http://resqueue.com)
+###Installing [RSQueue](http://rsqueue.com)
 You have to add require line into you composer.json file
 
     "require": {
