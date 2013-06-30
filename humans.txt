@@ -1,6 +1,6 @@
                             
 /* TEAM */            
-PHP Developer and founder: : Marc Morera 
+PHP Developer and founder: Marc Morera 
 Site: http://rsqueue.com
 Twitter: mmoreram                   
 Location: Barcelona, Catalunya, Catalunya.

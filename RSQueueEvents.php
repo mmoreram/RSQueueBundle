@@ -14,7 +14,7 @@ namespace Mmoreram\RSQueueBundle;
 class RSQueueEvents
 {
     /**
-     * The rsqueue.consumer is thrown every time a job is consumed by consumer
+     * The rsqueue.consumer is thrown each time a job is consumed by consumer
      *
      * The event listener recieves an
      * Mmoreram\RSQueueBundle\Event\RSQueueConsumerEvent instance
@@ -25,7 +25,7 @@ class RSQueueEvents
 
 
     /**
-     * The rsqueue.subscriber is thrown every time a job is consumed by subscriber
+     * The rsqueue.subscriber is thrown each time a job is consumed by subscriber
      *
      * The event listener recieves an
      * Mmoreram\RSQueueBundle\Event\RSQueueSubscriberEvent instance
@@ -36,7 +36,7 @@ class RSQueueEvents
 
 
     /**
-     * The rsqueue.producer is thrown every time a job is consumed by producer
+     * The rsqueue.producer is thrown each time a job is consumed by producer
      *
      * The event listener recieves an
      * Mmoreram\RSQueueBundle\Event\RSQueueProducerEvent instance
@@ -47,7 +47,7 @@ class RSQueueEvents
 
 
     /**
-     * The rsqueue.publisher is thrown every time a job is consumed by publisher
+     * The rsqueue.publisher is thrown each time a job is consumed by publisher
      *
      * The event listener recieves an
      * Mmoreram\RSQueueBundle\Event\RSQueuePublisherEvent instance
