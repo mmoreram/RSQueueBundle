@@ -1,4 +1,5 @@
-#RSQueueBundle for Symfony   [![Build Status](https://secure.travis-ci.org/mmoreram/rsqueue-bundle.png?branch=master)](http://travis-ci.org/mmoreram/rsqueue-bundle)
+[![Build Status](https://secure.travis-ci.org/mmoreram/rsqueue-bundle.png?branch=master)](http://travis-ci.org/mmoreram/rsqueue-bundle)  [![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/mmoreram/rsqueue-bundle/badges/quality-score.png?s=7cd42d00eb3a7768d89a09dd76eb9031e6e44f0f)](https://scrutinizer-ci.com/g/mmoreram/rsqueue-bundle/)
+#RSQueueBundle for Symfony
 ##Simple queuing system based on Redis
 
 <iframe src="http://www.slideshare.net/MarcMorera/slideshelf" width="490px" height="470px" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:none;" allowfullscreen webkitallowfullscreen mozallowfullscreen></iframe>
