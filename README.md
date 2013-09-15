@@ -1,4 +1,5 @@
-[![Build Status](https://secure.travis-ci.org/mmoreram/rsqueue-bundle.png?branch=master)](http://travis-ci.org/mmoreram/rsqueue-bundle)  [![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/mmoreram/RSQueueBundle/badges/quality-score.png?s=290f904ff14fb72d9d40288682949b3de88f99f9)](https://scrutinizer-ci.com/g/mmoreram/RSQueueBundle/)
+![Payment Suite](http://origin-shields-io.herokuapp.com/Still/maintained.png?color=green)  [![Build Status](https://secure.travis-ci.org/mmoreram/rsqueue-bundle.png?branch=master)](http://travis-ci.org/mmoreram/rsqueue-bundle)  [![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/mmoreram/RSQueueBundle/badges/quality-score.png?s=290f904ff14fb72d9d40288682949b3de88f99f9)](https://scrutinizer-ci.com/g/mmoreram/RSQueueBundle/)
+
 #RSQueueBundle for Symfony
 ##Simple queuing system based on Redis
 
