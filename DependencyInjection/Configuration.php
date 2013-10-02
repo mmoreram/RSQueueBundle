@@ -36,6 +36,19 @@ class Configuration implements ConfigurationInterface
                     ->treatNullLike('Mmoreram\\RSQueueBundle\\Serializer\\JsonSerializer')
                     ->defaultValue('Mmoreram\\RSQueueBundle\\Serializer\\JsonSerializer')
                 ->end()
+                ->arrayNode('server')
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->arrayNode('redis')
+                            ->addDefaultsIfNotSet()
+                            ->children()
+                                ->scalarNode('host')->defaultValue('127.0.0.1')->end()
+                                ->scalarNode('port')->defaultValue(6379)->end()
+                                ->scalarNode('database')->defaultValue(null)->end()
+                            ->end()
+                        ->end()
+                    ->end()
+                ->end()
             ->end();
 
         return $treeBuilder;

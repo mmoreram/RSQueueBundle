@@ -32,6 +32,11 @@ class RSQueueExtension extends Extension
             $config['serializer']
         );
 
+        $container->setParameter(
+            'rs_queue.server.redis',
+            $config['server']['redis']
+        );
+
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
     }

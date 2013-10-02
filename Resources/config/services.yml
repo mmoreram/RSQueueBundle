@@ -18,6 +18,8 @@ services:
 
     rs_queue.redis.factory:
         class: %rs_queue.redis.factory.class%
+        arguments:
+          redis: %rs_queue.server.redis%
 
     rs_queue.redis:
         class: Redis
