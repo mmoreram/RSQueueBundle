@@ -16,6 +16,20 @@ use Redis;
 class RedisFactory
 {
     /**
+     * @var array
+     *
+     * Settings for connection to redis.
+     *
+     * This value is set in bundle config file
+     */
+    public $config;
+
+    public function __construct(array $config)
+    {
+        $this->config = $config;
+    }
+
+    /**
      * Generate new Predis instance
      *
      * @return \Redis instance
@@ -23,9 +37,11 @@ class RedisFactory
     public function get()
     {
         $redis = new Redis;
-        $redis->connect('127.0.0.1', 6379);
+        $redis->connect($this->config['host'], $this->config['port']);
         $redis->setOption(Redis::OPT_READ_TIMEOUT, -1);
-
+        if ($this->config['database']) {
+            $redis->select($this->config['database']);
+        }
         return $redis;
     }
 }
