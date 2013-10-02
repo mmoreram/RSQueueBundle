@@ -20,14 +20,14 @@ class Publisher extends AbstractService
     /**
      * Enqueues payload inside desired queue
      *
-     * @param Mixed  $payload      Data to publish
      * @param String $channelAlias Name of channel to publish payload
+     * @param Mixed  $payload      Data to publish
      *
      * @return Producer self Object
      *
      * @throws InvalidAliasException If any alias is not defined
      */
-    public function publish($payload, $channelAlias)
+    public function publish($channelAlias, $payload)
     {
         $channel = $this->queueAliasResolver->getQueue($channelAlias);
         $payloadSerialized = $this->serializer->apply($payload);
