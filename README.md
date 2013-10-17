@@ -67,8 +67,8 @@ Producers/Consumers
 Producer/consumer model allows you to produce elements into one/many queues by using default rsqueue producer service.  
 One element is pushed into one queue so one and only one consumer will pop and treat this element.
 
-    $this->container->get("rsqueue.producer")->produce("videos", "this is my video");
-    $this->container->get("rsqueue.producer")->produce("audios", "this is my audio");
+    $this->container->get("rsqueue.producer")->produce("this is my video", "videos");
+    $this->container->get("rsqueue.producer")->produce("this is my audio", "audios");
 
 Then you should extend ConsumerCommand so that in this way you can define which queues listen, and in each case, which action execute.
 
@@ -120,7 +120,7 @@ Publishers/Subscribers
 -----
 This model allows data broadcasting. This means that one or more Subscribers will treat all elements of the queue, but only if they are listening just in the moment publisher publish them.
     
-    $this->container->get("rsqueue.publisher")->publish("audios", "this is my audio");
+    $this->container->get("rsqueue.publisher")->publish("this is my audio", "audios");
 
 And, as consumers, subscribers must define which channels they want to listen
 
