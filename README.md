@@ -1,18 +1,19 @@
+RSQueueBundle for Symfony
+=====
+### Simple queuing system based on Redis
+
 [![Build Status](https://secure.travis-ci.org/mmoreram/RSQueueBundle.png?branch=master)](http://travis-ci.org/mmoreram/rsqueue-bundle)
 [![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/mmoreram/RSQueueBundle/badges/quality-score.png?s=290f904ff14fb72d9d40288682949b3de88f99f9)](https://scrutinizer-ci.com/g/mmoreram/RSQueueBundle/)
 
-#RSQueueBundle for Symfony
-##Simple queuing system based on Redis
-
-<iframe src="http://www.slideshare.net/MarcMorera/slideshelf" width="490px" height="470px" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:none;" allowfullscreen webkitallowfullscreen mozallowfullscreen></iframe>
-
-###Installing [Redis](http://redis.io)
+Installing [Redis](http://redis.io)
+-----
     wget http://download.redis.io/redis-stable.tar.gz
     tar xvzf redis-stable.tar.gz
     cd redis-stable
     make
 
-###Installing [PHPRedis](https://github.com/nicolasff/phpredis)
+Installing [PHPRedis](https://github.com/nicolasff/phpredis)
+-----
 phpredis extension is necessary to be installed in your server.  
 Otherwise composer will alert you.
 
@@ -25,7 +26,8 @@ Otherwise composer will alert you.
     cd ..
     echo "extension=redis.so" >> `php --ini | grep "Loaded Configuration" | sed -e "s|.*:\s*||"`
 
-###Installing [RSQueue](http://rsqueue.com)
+Installing [RSQueue](http://rsqueue.com)
+-----
 You have to add require line into you composer.json file
 
     "require": {
@@ -47,7 +49,8 @@ And register the bundle in your appkernel.php file
         // ...
     );
 
-###Configuring RSQueue
+Configuring RSQueue
+-----
 In this first version, all conections are localhost:6379, but as soon as posible connections will be configurable.  
 You need to configure all queues and serializer.  
 By default serializer has the value 'Json', but also 'PHP' value can be used. Also custom serializer can be implemented by extending default serializer interface. Then you need to add namespace of class into the rs_queue.serializer parameter.
@@ -59,7 +62,8 @@ By default serializer has the value 'Json', but also 'PHP' value can be used. Al
             audios: "queues:audios"
         serializer: ~
 
-###Producers/Consumers
+Producers/Consumers
+-----
 Producer/consumer model allows you to produce elements into one/many queues by using default rsqueue producer service.  
 One element is pushed into one queue so one and only one consumer will pop and treat this element.
 
@@ -78,6 +82,9 @@ Then you should extend ConsumerCommand so that in this way you can define which 
     class TestConsumerCommand extends ConsumerCommand
     {
 
+        /**
+         * Configuration method
+         */
         protected function configure()
         {
             $this
@@ -88,6 +95,9 @@ Then you should extend ConsumerCommand so that in this way you can define which 
             parent::configure();
         }
 
+        /**
+         * Relates queue name with appropiated method
+         */
         public function define()
         {
             $this->addQueue('videos', 'consumeVideo');
@@ -106,7 +116,8 @@ Then you should extend ConsumerCommand so that in this way you can define which 
         }
     }
 
-###Publishers/Subscribers
+Publishers/Subscribers
+-----
 This model allows data broadcasting. This means that one or more Subscribers will treat all elements of the queue, but only if they are listening just in the moment publisher publish them.
     
     $this->container->get("rsqueue.publisher")->publish("audios", "this is my audio");
@@ -123,6 +134,9 @@ And, as consumers, subscribers must define which channels they want to listen
     class TestSubscriberCommand extends SubscriberCommand
     {
 
+        /**
+         * Configuration method
+         */
         protected function configure()
         {
             $this
@@ -133,6 +147,9 @@ And, as consumers, subscribers must define which channels they want to listen
             parent::configure();
         }
 
+        /**
+         * Relates queue name with appropiated method
+         */
         public function define()
         {
             $this->addChannel('audios', 'consumeAudio');
@@ -163,6 +180,9 @@ By extending PSubscriberCommand you can define patterns instead of queue names.
     class TestPSubscriberCommand extends PSubscriberCommand
     {
 
+        /**
+         * Configuration method
+         */
         protected function configure()
         {
             $this
@@ -173,6 +193,9 @@ By extending PSubscriberCommand you can define patterns instead of queue names.
             parent::configure();
         }
 
+        /**
+         * Relates queue name with appropiated method
+         */
         public function define()
         {
             $this->addPattern('*', 'consumeAll');
@@ -191,7 +214,8 @@ By extending PSubscriberCommand you can define patterns instead of queue names.
         }
     }
 
-###Events
+Events
+-----
 Custom events are used in this bundle.
 
     /**
@@ -234,11 +258,13 @@ Custom events are used in this bundle.
      */
     const RSQUEUE_PUBLISHER = 'rsqueue.publisher';
 
-###In development
+In development
+-----
 * Connection managment
 * Monitoring features
 * Documentation with some interesting data about queues
 
-### What else?
+What else?
+-----
 This bundle is currently being tested.  
 Every comment, or issue, or help will be thankful.
