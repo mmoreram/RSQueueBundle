@@ -29,6 +29,7 @@ class RedisFactory
         $this->config = $config;
     }
 
+
     /**
      * Generate new Predis instance
      *
@@ -42,6 +43,7 @@ class RedisFactory
         if ($this->config['database']) {
             $redis->select($this->config['database']);
         }
+
         return $redis;
     }
 }

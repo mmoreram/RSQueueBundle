@@ -10,7 +10,6 @@ namespace Mmoreram\RSQueueBundle\Services\Abstracts;
 
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Redis as RedisClient;
-use Mmoreram\RSQueueBundle\Exception\InvalidQueueNameException;
 use Mmoreram\RSQueueBundle\Serializer\Interfaces\SerializerInterface;
 use Mmoreram\RSQueueBundle\Resolver\QueueAliasResolver;
 

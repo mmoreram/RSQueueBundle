@@ -15,7 +15,6 @@ use Exception;
 
 use Mmoreram\RSQueueBundle\Event\RSQueueProducerEvent;
 use Mmoreram\RSQueueBundle\Event\RSQueuePublisherEvent;
-use Mmoreram\RSQueueBundle\Event\RSQueueConsumerEvent;
 
 
 /**

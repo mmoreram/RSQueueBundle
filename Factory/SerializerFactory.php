@@ -41,8 +41,6 @@ class SerializerFactory
     /**
      * Generate new Serializer
      *
-     * @todo Cache this process
-     *
      * @return SerializerInterface Generated Serializer
      */
     public function get()
