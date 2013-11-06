@@ -2,6 +2,7 @@ RSQueueBundle for Symfony
 =====
 ### Simple queuing system based on Redis
 
+[![SensioLabsInsight](https://insight.sensiolabs.com/projects/78931ad8-b016-4b5b-9b45-c5a5767fbd9e/mini.png)](https://insight.sensiolabs.com/projects/78931ad8-b016-4b5b-9b45-c5a5767fbd9e)
 [![Build Status](https://secure.travis-ci.org/mmoreram/RSQueueBundle.png?branch=master)](http://travis-ci.org/mmoreram/rsqueue-bundle)
 [![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/mmoreram/RSQueueBundle/badges/quality-score.png?s=290f904ff14fb72d9d40288682949b3de88f99f9)](https://scrutinizer-ci.com/g/mmoreram/RSQueueBundle/)
 
