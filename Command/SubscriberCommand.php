@@ -75,6 +75,11 @@ abstract class SubscriberCommand extends AbstractRSQueueCommand
         $channelAliases = array_keys($methods);
         $channels = $resolver->getQueues($channelAliases);
 
+        if ($this->shuffleQueues()) {
+
+            shuffle($channels);
+        }
+
         $this
             ->getContainer()
             ->get('rs_queue.redis')

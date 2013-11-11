@@ -105,6 +105,17 @@ Then you should extend ConsumerCommand so that in this way you can define which 
         }
 
         /**
+         * If many queues are defined, as Redis respects order of queues, you can shuffle them
+         * just overwritting method shuffleQueues() and returning true
+         *
+         * @return boolean Shuffle before passing to Gearman
+         */
+        public function shuffleQueues()
+        {
+            return true;
+        }
+
+        /**
          * Consume method with retrieved queue value
          *
          * @param InputInterface  $input   An InputInterface instance
@@ -157,6 +168,17 @@ And, as consumers, subscribers must define which channels they want to listen
         }
 
         /**
+         * If many queues are defined, as Redis respects order of queues, you can shuffle them
+         * just overwritting method shuffleQueues() and returning true
+         *
+         * @return boolean Shuffle before passing to Gearman
+         */
+        public function shuffleQueues()
+        {
+            return true;
+        }
+
+        /**
          * subscriber method with retrieved queue value
          *
          * @param InputInterface  $input   An InputInterface instance
@@ -200,6 +222,17 @@ By extending PSubscriberCommand you can define patterns instead of queue names.
         public function define()
         {
             $this->addPattern('*', 'consumeAll');
+        }
+
+        /**
+         * If many queues are defined, as Redis respects order of queues, you can shuffle them
+         * just overwritting method shuffleQueues() and returning true
+         *
+         * @return boolean Shuffle before passing to Gearman
+         */
+        public function shuffleQueues()
+        {
+            return true;
         }
 
         /**

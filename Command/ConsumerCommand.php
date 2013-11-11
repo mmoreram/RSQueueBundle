@@ -119,9 +119,14 @@ abstract class ConsumerCommand extends AbstractRSQueueCommand
         $timeout = (int) $input->getOption('timeout');
         $sleep = (int) $input->getOption('sleep');
         $iterationsDone = 0;
-        $queueAliases = array_keys($this->methods);
+        $queuesAlias = array_keys($this->methods);
 
-        while ($response = $consumer->consume($queueAliases, $timeout)) {
+        if ($this->shuffleQueues()) {
+
+            shuffle($queuesAlias);
+        }
+
+        while ($response = $consumer->consume($queuesAlias, $timeout)) {
 
             list($queueAlias, $payload) = $response;
             $method = $this->methods[$queueAlias];

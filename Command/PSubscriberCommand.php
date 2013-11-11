@@ -65,6 +65,11 @@ abstract class PSubscriberCommand extends AbstractRSQueueCommand
 
         $patterns = array_keys($methods);
 
+        if ($this->shuffleQueues()) {
+
+            shuffle($patterns);
+        }
+        
         $this
             ->getContainer()
             ->get('rs_queue.redis')

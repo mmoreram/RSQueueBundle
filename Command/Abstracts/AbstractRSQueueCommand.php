@@ -50,4 +50,19 @@ abstract class AbstractRSQueueCommand extends ContainerAwareCommand implements R
 
         return $this;
     }
+
+
+    /**
+     * Set automatic queue mixing when several queues are defined.
+     *
+     * This method returns if queue order must be shuffled before passing to gearman
+     *
+     * By default is false, so same order will be passed as defined.
+     *
+     * @return boolean Shuffle before passing to Gearman
+     */
+    protected function shuffleQueues()
+    {
+        return false;
+    }
 }
