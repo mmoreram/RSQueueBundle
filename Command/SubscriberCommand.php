@@ -69,7 +69,6 @@ abstract class SubscriberCommand extends AbstractRSQueueCommand
         $serializer = $this->getContainer()->get('rs_queue.serializer');
         $resolver = $this->getContainer()->get('rs_queue.resolver.queuealias');
         $eventDispatcher = $this->getContainer()->get('event_dispatcher');
-        $subscriberCommand = $this;
         $methods = $this->methods;
 
         $channelAliases = array_keys($methods);
@@ -83,7 +82,7 @@ abstract class SubscriberCommand extends AbstractRSQueueCommand
         $this
             ->getContainer()
             ->get('rs_queue.redis')
-            ->subscribe($channels, function($redis, $channel, $payloadSerialized) use ($methods, $subscriberCommand, $resolver, $serializer, $eventDispatcher, $input, $output) {
+            ->subscribe($channels, function($redis, $channel, $payloadSerialized) use ($methods, $resolver, $serializer, $eventDispatcher, $input, $output) {
 
                 $channelAlias = $resolver->getQueueAlias($channel);
                 $method = $methods[$channelAlias];
