@@ -142,7 +142,7 @@ abstract class ConsumerCommand extends AbstractRSQueueCommand
 
             if ( ($iterations > 0) && (++$iterationsDone >= $iterations) ) {
 
-                exit;
+                break;
             }
 
             sleep($sleep);
