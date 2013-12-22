@@ -83,10 +83,21 @@ By default serializer has the value 'Json', but also 'PHP' value can be used. Al
 
 
     rs_queue:
+
+        # Queues definition
         queues:
             videos: "queues:videos"
             audios: "queues:audios"
+
+        # Serializer definition
         serializer: ~
+
+        # Server configuration. By default, these values
+        server:
+            redis:
+                host: 127.0.0.1
+                port: 6379
+                database: ~
 
 Producers/Consumers
 -----
