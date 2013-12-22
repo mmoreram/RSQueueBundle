@@ -5,16 +5,41 @@ RSQueueBundle for Symfony
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/78931ad8-b016-4b5b-9b45-c5a5767fbd9e/mini.png)](https://insight.sensiolabs.com/projects/78931ad8-b016-4b5b-9b45-c5a5767fbd9e)
 [![Build Status](https://secure.travis-ci.org/mmoreram/RSQueueBundle.png?branch=master)](http://travis-ci.org/mmoreram/rsqueue-bundle)
 [![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/mmoreram/RSQueueBundle/badges/quality-score.png?s=290f904ff14fb72d9d40288682949b3de88f99f9)](https://scrutinizer-ci.com/g/mmoreram/RSQueueBundle/)
+[![Latest Stable Version](https://poser.pugx.org/mmoreram/rsqueue-bundle/v/stable.png)](https://packagist.org/packages/mmoreram/rsqueue-bundle)
+[![Latest Unstable Version](https://poser.pugx.org/mmoreram/rsqueue-bundle/v/unstable.png)](https://packagist.org/packages/mmoreram/rsqueue-bundle)
+[![Dependency Status](https://www.versioneye.com/user/projects/52ab6d12632bacbeaa000010/badge.png)](https://www.versioneye.com/user/projects/52ab6d12632bacbeaa000010)
+[![Total Downloads](https://poser.pugx.org/mmoreram/rsqueue-bundle/downloads.png)](https://packagist.org/packages/mmoreram/rsqueue-bundle)
 
-Installing [Redis](http://redis.io)
+Table of contents
 -----
+1. [Installing/Configuring](#installingconfiguring)
+    * [Tags](#tags)
+    * [Installing Redis](#installing-redis)
+    * [Installing PHPRedis](#installing-phpredis)
+    * [Installing RSQueue](#installing-rsqueue)
+    * [Configuration](#configuration)
+2. [Producers/Consumers](#producersconsumers)
+3. [Publishers/Subscribers](#publisherssubscribers)
+4. [Events](#events)
+5. [Contributing](#contribute)
+
+Installing/Configuring
+-----
+
+## Tags
+
+* Use version `2.3-dev` for last updated. Alias of `dev-master`.
+* Use last stable version tag to stay in a stable release.
+
+## Installing [Redis](http://redis.io)
+
     wget http://download.redis.io/redis-stable.tar.gz
     tar xvzf redis-stable.tar.gz
     cd redis-stable
     make
 
-Installing [PHPRedis](https://github.com/nicolasff/phpredis)
------
+## Installing [PHPRedis](https://github.com/nicolasff/phpredis)
+
 phpredis extension is necessary to be installed in your server.  
 Otherwise composer will alert you.
 
@@ -27,8 +52,8 @@ Otherwise composer will alert you.
     cd ..
     echo "extension=redis.so" >> `php --ini | grep "Loaded Configuration" | sed -e "s|.*:\s*||"`
 
-Installing [RSQueue](http://rsqueue.com)
------
+## Installing [RSQueue](http://rsqueue.com)
+
 You have to add require line into you composer.json file
 
     "require": {
@@ -50,8 +75,8 @@ And register the bundle in your appkernel.php file
         // ...
     );
 
-Configuring RSQueue
------
+## Configuration
+
 In this first version, all conections are localhost:6379, but as soon as posible connections will be configurable.  
 You need to configure all queues and serializer.  
 By default serializer has the value 'Json', but also 'PHP' value can be used. Also custom serializer can be implemented by extending default serializer interface. Then you need to add namespace of class into the rs_queue.serializer parameter.
@@ -292,13 +317,16 @@ Custom events are used in this bundle.
      */
     const RSQUEUE_PUBLISHER = 'rsqueue.publisher';
 
-In development
+Contributing
 -----
-* Connection managment
-* Monitoring features
-* Documentation with some interesting data about queues
 
-What else?
------
-This bundle is currently being tested.  
-Every comment, or issue, or help will be thankful.
+All code is Symfony2 Code formatted, so every pull request must validate phpcs standards.
+You should read [Symfony2 coding standards](http://symfony.com/doc/current/contributing/code/standards.html) and install [this](https://github.com/opensky/Symfony2-coding-standard) CodeSniffer to check all code is validated.
+
+There is also a policy for contributing to this project. All pull request must be all explained step by step, to make us more understandable and easier to merge pull request. All new features must be tested with PHPUnit.
+
+If you'd like to contribute, please read the [Contributing Code][1] part of the documentation. If you're submitting a pull request, please follow the guidelines in the [Submitting a Patch][2] section and use the [Pull Request Template][3].
+
+[1]: http://symfony.com/doc/current/contributing/code/index.html
+[2]: http://symfony.com/doc/current/contributing/code/patches.html#check-list
+[3]: http://symfony.com/doc/current/contributing/code/patches.html#make-a-pull-request

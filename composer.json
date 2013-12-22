@@ -13,13 +13,13 @@
     ],
     "require": {
         "php": ">=5.3.3",
-        "symfony/event-dispatcher": ">=2.2.3",
-        "symfony/framework-bundle": ">=2.2.3",
-        "doctrine/annotations": "1.0.*@dev",
-        "symfony/console": ">=2.2.3",
-        "symfony/config": ">=2.2.3",
-        "symfony/http-kernel": ">=2.2.3",
-        "symfony/dependency-injection": ">=2.2.3"
+        "symfony/event-dispatcher": ">=2.1",
+        "symfony/framework-bundle": ">=2.1",
+        "doctrine/annotations": "1.2.*@dev",
+        "symfony/console": ">=2.1",
+        "symfony/config": ">=2.1",
+        "symfony/http-kernel": ">=2.1",
+        "symfony/dependency-injection": ">=2.1"
     },
     "require-dev": {
         "phpunit/phpunit": "3.7.*"
@@ -27,5 +27,11 @@
     "target-dir": "Mmoreram/RSQueueBundle",
     "autoload": {
         "psr-0": { "Mmoreram\\RSQueueBundle": "" }
+    },
+    "minimum-stability": "stable",
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
     }
 }
