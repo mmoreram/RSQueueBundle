@@ -28,7 +28,7 @@ Installing/Configuring
 
 ## Tags
 
-* Use version `2.3-dev` for last updated. Alias of `dev-master`.
+* Use version `1.0-dev` for last updated. Alias of `dev-master`.
 * Use last stable version tag to stay in a stable release.
 
 ## Installing [Redis](http://redis.io)
