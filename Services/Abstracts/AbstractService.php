@@ -8,7 +8,7 @@
 
 namespace Mmoreram\RSQueueBundle\Services\Abstracts;
 
-use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Redis as RedisClient;
 use Mmoreram\RSQueueBundle\Serializer\Interfaces\SerializerInterface;
 use Mmoreram\RSQueueBundle\Resolver\QueueAliasResolver;
@@ -60,7 +60,7 @@ class AbstractService
      *
      * Construct method
      */
-    public function __construct(EventDispatcher $eventDispatcher, RedisClient $redis, QueueAliasResolver $queueAliasResolver, SerializerInterface $serializer)
+    public function __construct(EventDispatcherInterface $eventDispatcher, RedisClient $redis, QueueAliasResolver $queueAliasResolver, SerializerInterface $serializer)
     {
         $this->eventDispatcher = $eventDispatcher;
         $this->redis = $redis;
