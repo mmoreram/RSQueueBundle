@@ -21,7 +21,7 @@ use Mmoreram\RSQueueBundle\Resolver\QueueAliasResolver;
 class AbstractService
 {
     /**
-     * @EventDispatcher
+     * @var EventDispatcherInterface
      *
      * EventDispatcher instance
      */
