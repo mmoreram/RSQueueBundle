@@ -9,7 +9,6 @@
 namespace Mmoreram\RSQueueBundle\Tests\Services;
 
 use Mmoreram\RSQueueBundle\Services\Consumer;
-use Mmoreram\RSQueueBundle\RSQueueEvents;
 
 /**
  * Tests Consumer class

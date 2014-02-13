@@ -8,9 +8,6 @@
 
 namespace Mmoreram\RSQueueBundle\Event\Abstracts;
 
-use Mmoreram\RSQueueBundle\Event\Abstracts\AbstractRSEvent;
-
-
 /**
  * Abstract channel event
  */
@@ -24,14 +21,12 @@ abstract class AbstractRSChannelEvent extends AbstractRSEvent
      */
     protected $channelAlias;
 
-
     /**
      * @var String
      *
      * Real channel name
      */
     protected $channelName;
-
 
     /**
      * Construct method
@@ -50,7 +45,6 @@ abstract class AbstractRSChannelEvent extends AbstractRSEvent
         $this->channelName = $channelName;
     }
 
-
     /**
      * Return channel alias
      *
@@ -60,7 +54,6 @@ abstract class AbstractRSChannelEvent extends AbstractRSEvent
     {
         return $this->channelAlias;
     }
-
 
     /**
      * Return channel name

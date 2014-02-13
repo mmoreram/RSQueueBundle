@@ -23,7 +23,6 @@ class RSQueueConsumerEventTest extends \PHPUnit_Framework_TestCase
      */
     private $rsqueueConsumerEvent;
 
-
     /**
      * @var array
      *
@@ -34,14 +33,12 @@ class RSQueueConsumerEventTest extends \PHPUnit_Framework_TestCase
         'engonga'   =>  'someengongadata'
     );
 
-
     /**
      * @var string
      *
      * Payload serialized
      */
     private $payloadSerialized = '{"foo":"foodata","engonga":"someengongadata"}';
-
 
     /**
      * @var string
@@ -50,7 +47,6 @@ class RSQueueConsumerEventTest extends \PHPUnit_Framework_TestCase
      */
     private $queueAlias = 'queueAlias';
 
-
     /**
      * @var string
      *
@@ -58,14 +54,12 @@ class RSQueueConsumerEventTest extends \PHPUnit_Framework_TestCase
      */
     private $queueName = 'queueName';
 
-
     /**
      * @var Redis
      *
      * Redis mock instance
      */
     private $redis;
-
 
     /**
      * Setup
@@ -77,7 +71,6 @@ class RSQueueConsumerEventTest extends \PHPUnit_Framework_TestCase
         $this->rsqueueConsumerEvent = new RSQueueConsumerEvent($this->payload, $this->payloadSerialized, $this->queueAlias, $this->queueName, $this->redis);
     }
 
-
     /**
      * Testing payload getter
      */
@@ -85,7 +78,6 @@ class RSQueueConsumerEventTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals($this->rsqueueConsumerEvent->getPayload(), $this->payload);
     }
-
 
     /**
      * Testing payload serialized getter
@@ -95,7 +87,6 @@ class RSQueueConsumerEventTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($this->rsqueueConsumerEvent->getPayloadSerialized(), $this->payloadSerialized);
     }
 
-
     /**
      * Testing queuename getter
      */
@@ -104,7 +95,6 @@ class RSQueueConsumerEventTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($this->rsqueueConsumerEvent->getQueueName(), $this->queueName);
     }
 
-
     /**
      * Testing queuealias getter
      */
@@ -112,7 +102,6 @@ class RSQueueConsumerEventTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals($this->rsqueueConsumerEvent->getQueueAlias(), $this->queueAlias);
     }
-
 
     /**
      * Testing Redis getter

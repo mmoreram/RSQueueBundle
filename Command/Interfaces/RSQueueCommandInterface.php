@@ -8,7 +8,6 @@
 
 namespace Mmoreram\RSQueueBundle\Command\Interfaces;
 
-
 /**
  * Interface for all rs queue commands
  */

@@ -24,7 +24,6 @@ class SerializerFactory
      */
     protected $serializerType;
 
-
     /**
      * Construct method
      *
@@ -37,7 +36,6 @@ class SerializerFactory
         $this->serializerType = $serializerType;
     }
 
-
     /**
      * Generate new Serializer
      *
@@ -48,7 +46,6 @@ class SerializerFactory
         if (class_exists($this->serializerType)) {
 
             if (in_array('Mmoreram\\RSQueueBundle\\Serializer\\Interfaces\\SerializerInterface', class_implements($this->serializerType))) {
-
                 return new $this->serializerType;
             } else {
 
@@ -59,7 +56,6 @@ class SerializerFactory
         $composedSerializerNamespace = '\\Mmoreram\\RSQueueBundle\\Serializer\\' . $this->serializerType . 'Serializer';
 
         if (class_exists($composedSerializerNamespace)) {
-
             return new $composedSerializerNamespace;
         }
 

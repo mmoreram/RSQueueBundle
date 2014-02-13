@@ -12,7 +12,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Mmoreram\RSQueueBundle\Command\Abstracts\AbstractRSQueueCommand;
 
-
 /**
  * Abstract PSubscriber command
  *
@@ -48,7 +47,6 @@ abstract class PSubscriberCommand extends AbstractRSQueueCommand
         return $this->addMethod($pattern, $patternMethod);
     }
 
-
     /**
      * Execute code.
      *
@@ -69,11 +67,11 @@ abstract class PSubscriberCommand extends AbstractRSQueueCommand
 
             shuffle($patterns);
         }
-        
+
         $this
             ->getContainer()
             ->get('rs_queue.redis')
-            ->psubscribe($patterns, function($redis, $pattern, $channel, $payloadSerialized) use ($methods, $psubscriberCommand, $serializer, $input, $output) {
+            ->psubscribe($patterns, function ($redis, $pattern, $channel, $payloadSerialized) use ($methods, $psubscriberCommand, $serializer, $input, $output) {
 
                 $payload = $serializer->revert($payloadSerialized);
                 $method = $methods[$pattern];

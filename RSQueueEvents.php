@@ -23,7 +23,6 @@ class RSQueueEvents
      */
     const RSQUEUE_CONSUMER = 'rsqueue.consumer';
 
-
     /**
      * The rsqueue.subscriber is thrown each time a job is consumed by subscriber
      *
@@ -34,7 +33,6 @@ class RSQueueEvents
      */
     const RSQUEUE_SUBSCRIBER = 'rsqueue.subscriber';
 
-
     /**
      * The rsqueue.producer is thrown each time a job is consumed by producer
      *
@@ -44,7 +42,6 @@ class RSQueueEvents
      * @var string
      */
     const RSQUEUE_PRODUCER = 'rsqueue.producer';
-
 
     /**
      * The rsqueue.publisher is thrown each time a job is consumed by publisher

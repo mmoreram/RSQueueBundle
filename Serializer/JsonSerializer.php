@@ -28,7 +28,6 @@ class JsonSerializer implements SerializerInterface
         return json_encode($unserializedData);
     }
 
-
     /**
      * Given any kind of object, apply serialization
      *

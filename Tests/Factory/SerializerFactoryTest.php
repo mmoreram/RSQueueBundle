@@ -6,7 +6,7 @@
  * Marc Morera 2013
  */
 
-namespace Mmoreram\RSQueueBundle\Tests\Resolver;
+namespace Mmoreram\RSQueueBundle\Tests\Factory;
 
 use Mmoreram\RSQueueBundle\Factory\SerializerFactory;
 use Mmoreram\RSQueueBundle\Serializer\JsonSerializer;
@@ -30,7 +30,6 @@ class SerializerFactoryTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('\\Mmoreram\\RSQueueBundle\\Serializer\\PHPSerializer', $serializerFactory->get());
     }
 
-
     /**
      * Tests Json serializer load
      */
@@ -39,7 +38,6 @@ class SerializerFactoryTest extends \PHPUnit_Framework_TestCase
         $serializerFactory = new SerializerFactory('Json');
         $this->assertInstanceOf('\\Mmoreram\\RSQueueBundle\\Serializer\\JsonSerializer', $serializerFactory->get());
     }
-
 
     /**
      * Tests class or type not found
@@ -52,13 +50,11 @@ class SerializerFactoryTest extends \PHPUnit_Framework_TestCase
 
             $serializerFactory->get();
         } catch (SerializerNotFoundException $expected) {
-
             return;
         }
 
         $this->fail('An expected SerializerNotFoundException exception has not been raised.');
     }
-
 
     /**
      * Tests class found with not implementation of SerializerInterface
@@ -68,7 +64,6 @@ class SerializerFactoryTest extends \PHPUnit_Framework_TestCase
         $serializerFactory = new SerializerFactory('\\Mmoreram\\RSQueueBundle\\Serializer\\PHPSerializer');
         $this->assertInstanceOf('\\Mmoreram\\RSQueueBundle\\Serializer\\PHPSerializer', $serializerFactory->get());
     }
-
 
     /**
      * Tests class found with not implementation of SerializerInterface
@@ -81,7 +76,6 @@ class SerializerFactoryTest extends \PHPUnit_Framework_TestCase
 
             $serializerFactory->get();
         } catch (SerializerNotImplementsInterfaceException $expected) {
-
             return;
         }
 

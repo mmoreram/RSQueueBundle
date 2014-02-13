@@ -8,9 +8,6 @@
 
 namespace Mmoreram\RSQueueBundle\Event\Abstracts;
 
-use Mmoreram\RSQueueBundle\Event\Abstracts\AbstractRSEvent;
-
-
 /**
  * Abstract queue event
  */
@@ -24,14 +21,12 @@ abstract class AbstractRSQueueEvent extends AbstractRSEvent
      */
     protected $queueAlias;
 
-
     /**
      * @var String
      *
      * Real queue name
      */
     protected $queueName;
-
 
     /**
      * Construct method
@@ -50,7 +45,6 @@ abstract class AbstractRSQueueEvent extends AbstractRSEvent
         $this->queueName = $queueName;
     }
 
-
     /**
      * Return queue alias
      *
@@ -60,7 +54,6 @@ abstract class AbstractRSQueueEvent extends AbstractRSEvent
     {
         return $this->queueAlias;
     }
-
 
     /**
      * Return queue name

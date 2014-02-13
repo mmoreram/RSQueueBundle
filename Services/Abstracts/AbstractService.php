@@ -27,14 +27,12 @@ class AbstractService
      */
     protected $eventDispatcher;
 
-
     /**
      * @var Predis\Client
      *
      * Redis client used to interact with redis service
      */
     protected $redis;
-
 
     /**
      * @var QueueAliasResolver
@@ -43,14 +41,12 @@ class AbstractService
      */
     protected $queueAliasResolver;
 
-
     /**
      * @var SerializerInterface
      *
      * Serializer
      */
     protected $serializer;
-
 
     /**
      * @param EventDispatcher     $eventDispatcher    EventDispatcher instance

@@ -28,7 +28,6 @@ class PHPSerializer implements SerializerInterface
         return serialize($unserializedData);
     }
 
-
     /**
      * Given any kind of object, apply serialization
      *

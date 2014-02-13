@@ -27,7 +27,6 @@ class QueueAliasResolverTest extends \PHPUnit_Framework_TestCase
         'myqueue2'  =>  'queues.myqueue2',
     );
 
-
     /**
      * Tests get queue method
      */
@@ -36,7 +35,6 @@ class QueueAliasResolverTest extends \PHPUnit_Framework_TestCase
         $queueAliasResolver = new QueueAliasResolver($this->queues);
         $this->assertEquals($queueAliasResolver->getQueues(array_keys($this->queues)), array_values($this->queues));
     }
-
 
     /**
      * Tests get queue method
@@ -47,7 +45,6 @@ class QueueAliasResolverTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($queueAliasResolver->getQueue('myqueue1'), $this->queues['myqueue1']);
         $this->assertEquals($queueAliasResolver->getQueue('myqueue2'), $this->queues['myqueue2']);
     }
-
 
     /**
      * Test check method
@@ -61,7 +58,6 @@ class QueueAliasResolverTest extends \PHPUnit_Framework_TestCase
 
             $queueAliasResolver->checkQueue('myqueue3');
         } catch (InvalidAliasException $expected) {
-
             return;
         }
 

@@ -10,7 +10,6 @@ namespace Mmoreram\RSQueueBundle\Event;
 
 use Mmoreram\RSQueueBundle\Event\Abstracts\AbstractRSChannelEvent;
 
-
 /**
  * Publisher event
  */

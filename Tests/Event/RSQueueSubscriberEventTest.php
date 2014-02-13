@@ -23,7 +23,6 @@ class RSQueueSubscriberEventTest extends \PHPUnit_Framework_TestCase
      */
     private $rsqueueSubscriberEvent;
 
-
     /**
      * @var array
      *
@@ -34,14 +33,12 @@ class RSQueueSubscriberEventTest extends \PHPUnit_Framework_TestCase
         'engonga'   =>  'someengongadata'
     );
 
-
     /**
      * @var string
      *
      * Payload serialized
      */
     private $payloadSerialized = '{"foo":"foodata","engonga":"someengongadata"}';
-
 
     /**
      * @var string
@@ -50,7 +47,6 @@ class RSQueueSubscriberEventTest extends \PHPUnit_Framework_TestCase
      */
     private $channelAlias = 'channelAlias';
 
-
     /**
      * @var string
      *
@@ -58,14 +54,12 @@ class RSQueueSubscriberEventTest extends \PHPUnit_Framework_TestCase
      */
     private $channelName = 'channelName';
 
-
     /**
      * @var Redis
      *
      * Redis mock instance
      */
     private $redis;
-
 
     /**
      * Setup
@@ -77,7 +71,6 @@ class RSQueueSubscriberEventTest extends \PHPUnit_Framework_TestCase
         $this->rsqueueSubscriberEvent = new RSQueueSubscriberEvent($this->payload, $this->payloadSerialized, $this->channelAlias, $this->channelName, $this->redis);
     }
 
-
     /**
      * Testing payload getter
      */
@@ -85,7 +78,6 @@ class RSQueueSubscriberEventTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals($this->rsqueueSubscriberEvent->getPayload(), $this->payload);
     }
-
 
     /**
      * Testing payload serialized getter
@@ -95,7 +87,6 @@ class RSQueueSubscriberEventTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($this->rsqueueSubscriberEvent->getPayloadSerialized(), $this->payloadSerialized);
     }
 
-
     /**
      * Testing channelname getter
      */
@@ -104,7 +95,6 @@ class RSQueueSubscriberEventTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($this->rsqueueSubscriberEvent->getChannelName(), $this->channelName);
     }
 
-
     /**
      * Testing channelalias getter
      */
@@ -112,7 +102,6 @@ class RSQueueSubscriberEventTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals($this->rsqueueSubscriberEvent->getChannelAlias(), $this->channelAlias);
     }
-
 
     /**
      * Testing Redis getter

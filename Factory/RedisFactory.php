@@ -29,7 +29,6 @@ class RedisFactory
         $this->config = $config;
     }
 
-
     /**
      * Generate new Predis instance
      *

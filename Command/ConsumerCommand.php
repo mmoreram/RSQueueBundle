@@ -13,7 +13,6 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Mmoreram\RSQueueBundle\Command\Abstracts\AbstractRSQueueCommand;
 
-
 /**
  * Abstract consumer command
  *
@@ -49,7 +48,6 @@ abstract class ConsumerCommand extends AbstractRSQueueCommand
     {
         return $this->addMethod($queueAlias, $queueMethod);
     }
-
 
     /**
      * Configure command
@@ -97,7 +95,6 @@ abstract class ConsumerCommand extends AbstractRSQueueCommand
                 0
             );
     }
-
 
     /**
      * Execute code.

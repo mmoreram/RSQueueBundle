@@ -25,7 +25,6 @@ interface SerializerInterface
      */
     public function apply($unserializedData);
 
-
     /**
      * Given any kind of object, apply serialization
      *

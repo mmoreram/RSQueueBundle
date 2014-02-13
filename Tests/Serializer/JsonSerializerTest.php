@@ -30,7 +30,6 @@ class JsonSerializerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($serializedData, '{"foo":"foodata","engonga":"someengongadata"}');
     }
 
-
     /**
      * Test json serializer revert method
      */

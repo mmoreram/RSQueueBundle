@@ -30,7 +30,6 @@ class PHPSerializerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($serializedData, 'a:2:{s:3:"foo";s:7:"foodata";s:7:"engonga";s:15:"someengongadata";}');
     }
 
-
     /**
      * Test php serializer revert method
      */

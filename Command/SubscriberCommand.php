@@ -14,7 +14,6 @@ use Mmoreram\RSQueueBundle\Event\RSQueueSubscriberEvent;
 use Mmoreram\RSQueueBundle\Command\Abstracts\AbstractRSQueueCommand;
 use Mmoreram\RSQueueBundle\RSQueueEvents;
 
-
 /**
  * Abstract Subscriber command
  *
@@ -50,14 +49,13 @@ abstract class SubscriberCommand extends AbstractRSQueueCommand
         return $this->addMethod($channelAlias, $channelMethod);
     }
 
-
     /**
      * Execute code.
      *
      * @param InputInterface  $input  An InputInterface instance
      * @param OutputInterface $output An OutputInterface instance
      *
-     * @throws InvalidAliasException   If any alias is not defined
+     * @throws InvalidAliasException If any alias is not defined
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
@@ -82,7 +80,7 @@ abstract class SubscriberCommand extends AbstractRSQueueCommand
         $this
             ->getContainer()
             ->get('rs_queue.redis')
-            ->subscribe($channels, function($redis, $channel, $payloadSerialized) use ($methods, $resolver, $serializer, $eventDispatcher, $input, $output) {
+            ->subscribe($channels, function ($redis, $channel, $payloadSerialized) use ($methods, $resolver, $serializer, $eventDispatcher, $input, $output) {
 
                 $channelAlias = $resolver->getQueueAlias($channel);
                 $method = $methods[$channelAlias];

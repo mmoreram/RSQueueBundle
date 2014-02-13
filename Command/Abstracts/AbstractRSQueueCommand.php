@@ -12,7 +12,6 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Mmoreram\RSQueueBundle\Command\Interfaces\RSQueueCommandInterface;
 use Mmoreram\RSQueueBundle\Exceptions\MethodNotFoundException;
 
-
 /**
  * Abstract rs queue command
  */
@@ -25,7 +24,6 @@ abstract class AbstractRSQueueCommand extends ContainerAwareCommand implements R
      * Array with all configured queues/ with their callable methods
      */
     protected $methods = array();
-
 
     /**
      * Adds a queue/channel to subscribe on
@@ -50,7 +48,6 @@ abstract class AbstractRSQueueCommand extends ContainerAwareCommand implements R
 
         return $this;
     }
-
 
     /**
      * Set automatic queue mixing when several queues are defined.
