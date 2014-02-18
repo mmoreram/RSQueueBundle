@@ -348,3 +348,7 @@ in the [Submitting a Patch][2] section and use the [Pull Request Template][3].
 [1]: http://symfony.com/doc/current/contributing/code/index.html
 [2]: http://symfony.com/doc/current/contributing/code/patches.html#check-list
 [3]: http://symfony.com/doc/current/contributing/code/patches.html#make-a-pull-request
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/mmoreram/rsqueuebundle/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
