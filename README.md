@@ -5,10 +5,6 @@ RSQueueBundle for Symfony
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/78931ad8-b016-4b5b-9b45-c5a5767fbd9e/mini.png)](https://insight.sensiolabs.com/projects/78931ad8-b016-4b5b-9b45-c5a5767fbd9e)
 [![Build Status](https://secure.travis-ci.org/mmoreram/RSQueueBundle.png?branch=master)](http://travis-ci.org/mmoreram/rsqueue-bundle)
 [![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/mmoreram/RSQueueBundle/badges/quality-score.png?s=290f904ff14fb72d9d40288682949b3de88f99f9)](https://scrutinizer-ci.com/g/mmoreram/RSQueueBundle/)
-[![Latest Stable Version](https://poser.pugx.org/mmoreram/rsqueue-bundle/v/stable.png)](https://packagist.org/packages/mmoreram/rsqueue-bundle)
-[![Latest Unstable Version](https://poser.pugx.org/mmoreram/rsqueue-bundle/v/unstable.png)](https://packagist.org/packages/mmoreram/rsqueue-bundle)
-[![Dependency Status](https://www.versioneye.com/user/projects/52ab6d12632bacbeaa000010/badge.png)](https://www.versioneye.com/user/projects/52ab6d12632bacbeaa000010)
-[![Total Downloads](https://poser.pugx.org/mmoreram/rsqueue-bundle/downloads.png)](https://packagist.org/packages/mmoreram/rsqueue-bundle)
 
 Table of contents
 -----
