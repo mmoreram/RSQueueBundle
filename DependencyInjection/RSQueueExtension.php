@@ -3,6 +3,7 @@
 namespace Mmoreram\RSQueueBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader;
@@ -39,5 +40,23 @@ class RSQueueExtension extends Extension
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
+
+        // BC sf < 2.6
+        $definition = $container->getDefinition('rs_queue.serializer');
+        if (method_exists($definition, 'setFactory')) {
+            $definition->setFactory(array(new Reference('rs_queue.serializer.factory'), 'get'));
+        } else {
+            $definition->setFactoryService('rs_queue.serializer.factory');
+            $definition->setFactoryMethod('get');
+        }
+
+        // BC sf < 2.6
+        $definition = $container->getDefinition('rs_queue.redis');
+        if (method_exists($definition, 'setFactory')) {
+            $definition->setFactory(array(new Reference('rs_queue.redis.factory'), 'get'));
+        } else {
+            $definition->setFactoryService('rs_queue.redis.factory');
+            $definition->setFactoryMethod('get');
+        }
     }
 }

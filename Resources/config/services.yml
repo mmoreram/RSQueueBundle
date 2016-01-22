@@ -1,8 +1,8 @@
 parameters:
-    rs_queue.serializer.factory.class: "Mmoreram\RSQueueBundle\Factory\SerializerFactory"
-    rs_queue.serializer.interface: "Mmoreram\RSQueueBundle\SerializerInterface"
-    rs_queue.redis.factory.class: "Mmoreram\RSQueueBundle\Factory\RedisFactory"
-    rs_queue.resolver.queuealias.class: "Mmoreram\RSQueueBundle\Resolver\QueueAliasResolver"
+    rs_queue.serializer.factory.class: Mmoreram\RSQueueBundle\Factory\SerializerFactory
+    rs_queue.serializer.interface: Mmoreram\RSQueueBundle\SerializerInterface
+    rs_queue.redis.factory.class: Mmoreram\RSQueueBundle\Factory\RedisFactory
+    rs_queue.resolver.queuealias.class: Mmoreram\RSQueueBundle\Resolver\QueueAliasResolver
 
 services:
 
@@ -13,8 +13,6 @@ services:
 
     rs_queue.serializer:
         class: %rs_queue.serializer.interface%
-        factory_service: rs_queue.serializer.factory
-        factory_method: get
 
     rs_queue.redis.factory:
         class: %rs_queue.redis.factory.class%
@@ -23,8 +21,6 @@ services:
 
     rs_queue.redis:
         class: Redis
-        factory_service: rs_queue.redis.factory
-        factory_method: get
 
     rs_queue.resolver.queuealias:
         class: %rs_queue.resolver.queuealias.class%
@@ -34,10 +30,10 @@ services:
     rs_queue.service:
         abstract: true
         arguments:
-            eventDispatcher: @event_dispatcher
-            redis: @rs_queue.redis
-            queueNamesResolver: @rs_queue.resolver.queuealias
-            serializer: @rs_queue.serializer
+            eventDispatcher: "@event_dispatcher"
+            redis: "@rs_queue.redis"
+            queueNamesResolver: "@rs_queue.resolver.queuealias"
+            serializer: "@rs_queue.serializer"
 
     rs_queue.consumer:
         class: Mmoreram\RSQueueBundle\Services\Consumer
