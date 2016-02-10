@@ -8,8 +8,12 @@
 
 namespace Mmoreram\RSQueueBundle\Services;
 
+use Mmoreram\RSQueueBundle\Model\AbstractJobData;
+use Mmoreram\RSQueueBundle\Model\JobData;
+use Mmoreram\RSQueueBundle\Model\NoJobData;
 use Mmoreram\RSQueueBundle\Services\Abstracts\AbstractService;
 use Mmoreram\RSQueueBundle\RSQueueEvents;
+use Mmoreram\RSQueueBundle\Exception\InvalidAliasException;
 use Mmoreram\RSQueueBundle\Event\RSQueueConsumerEvent;
 
 /**
@@ -31,7 +35,7 @@ class Consumer extends AbstractService
      * @param Mixed   $queueAlias Alias of queue to consume from ( Can be an array of alias )
      * @param Integer $timeout    Timeout. By default, 0
      *
-     * @return Mixed payload unserialized
+     * @return AbstractJobData
      *
      * @throws InvalidAliasException If any alias is not defined
      */
@@ -52,34 +56,28 @@ class Consumer extends AbstractService
                 $payloadArray[$queue] = $jobs;
 
                 if (count($jobs) > 0) {
-                    $givenQueue = $queue;
-                    $payloadSerialized = $jobs[0];
                     $this->redis->zRem($queue, $jobs[0]);
 
-                    break;
+                    $payload         = $this->serializer->revert($jobs[0]);
+                    $givenQueueAlias = $this->queueAliasResolver->getQueueAlias($queue);
+
+                    /**
+                     * Dispatching consumer event...
+                     */
+                    $consumerEvent = new RSQueueConsumerEvent($payload, $jobs[0], $givenQueueAlias, $queue, $this->redis);
+                    $this->eventDispatcher->dispatch(RSQueueEvents::RSQUEUE_CONSUMER, $consumerEvent);
+
+                    return new JobData($givenQueueAlias, $payload);
                 }
             }
 
             if ($timeout != 0 && $startAt + $timeout < time()) {
-                break;
+                return new NoJobData();
             }
 
             sleep(1);
         }
 
-        if ($payloadSerialized === null || $givenQueue == null) {
-            return [];
-        }
-
-        $payload         = $this->serializer->revert($payloadSerialized);
-        $givenQueueAlias = $this->queueAliasResolver->getQueueAlias($givenQueue);
-
-        /**
-         * Dispatching consumer event...
-         */
-        $consumerEvent = new RSQueueConsumerEvent($payload, $payloadSerialized, $givenQueueAlias, $givenQueue, $this->redis);
-        $this->eventDispatcher->dispatch(RSQueueEvents::RSQUEUE_CONSUMER, $consumerEvent);
-
-        return [$givenQueueAlias, $payload];
+        return new NoJobData();
     }
 }

@@ -11,6 +11,7 @@ namespace Mmoreram\RSQueueBundle\Services;
 use Mmoreram\RSQueueBundle\Services\Abstracts\AbstractService;
 use Mmoreram\RSQueueBundle\RSQueueEvents;
 use Mmoreram\RSQueueBundle\Event\RSQueueProducerEvent;
+use Mmoreram\RSQueueBundle\Exception\InvalidAliasException;
 
 /**
  * Provider class

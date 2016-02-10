@@ -8,9 +8,13 @@
 
 namespace Mmoreram\RSQueueBundle\Command;
 
+use Mmoreram\RSQueueBundle\Model\JobData;
+use Mmoreram\RSQueueBundle\Services\Consumer;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Mmoreram\RSQueueBundle\Exception\InvalidAliasException;
+use Mmoreram\RSQueueBundle\Exception\MethodNotFoundException;
 use Mmoreram\RSQueueBundle\Command\Abstracts\AbstractRSQueueCommand;
 
 /**
@@ -111,6 +115,7 @@ abstract class ConsumerCommand extends AbstractRSQueueCommand
     {
         $this->define();
 
+        /** @var Consumer $consumer */
         $consumer = $this->getContainer()->get('rsqueue.consumer');
         $iterations = (int) $input->getOption('iterations');
         $timeout = (int) $input->getOption('timeout');
@@ -119,15 +124,12 @@ abstract class ConsumerCommand extends AbstractRSQueueCommand
         $queuesAlias = array_keys($this->methods);
 
         if ($this->shuffleQueues()) {
-
             shuffle($queuesAlias);
         }
 
-        while ($response = $consumer->consume($queuesAlias, $timeout, $sleep)) {
-            if (is_array($response)) {
-
-                list($queueAlias, $payload) = $response;
-                $method = $this->methods[$queueAlias];
+        while ($job = $consumer->consume($queuesAlias, $timeout)) {
+            if ($job instanceof JobData) {
+                $method = $this->methods[$job->getQueue()];
 
                 /**
                  * All custom methods must have these parameters
@@ -136,7 +138,7 @@ abstract class ConsumerCommand extends AbstractRSQueueCommand
                  * OutputInterface $output  An OutputInterface instance
                  * Mixed           $payload Payload
                  */
-                $this->$method($input, $output, $payload);
+                $this->$method($input, $output, $job->getPayload());
             }
 
             if ( ($iterations > 0) && (++$iterationsDone >= $iterations) ) {
