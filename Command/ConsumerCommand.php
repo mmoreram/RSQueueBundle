@@ -123,19 +123,21 @@ abstract class ConsumerCommand extends AbstractRSQueueCommand
             shuffle($queuesAlias);
         }
 
-        while ($response = $consumer->consume($queuesAlias, $timeout)) {
+        while ($response = $consumer->consume($queuesAlias, $timeout, $sleep)) {
+            if (is_array($response)) {
 
-            list($queueAlias, $payload) = $response;
-            $method = $this->methods[$queueAlias];
+                list($queueAlias, $payload) = $response;
+                $method = $this->methods[$queueAlias];
 
-            /**
-             * All custom methods must have these parameters
-             *
-             * InputInterface  $input   An InputInterface instance
-             * OutputInterface $output  An OutputInterface instance
-             * Mixed           $payload Payload
-             */
-            $this->$method($input, $output, $payload);
+                /**
+                 * All custom methods must have these parameters
+                 *
+                 * InputInterface  $input   An InputInterface instance
+                 * OutputInterface $output  An OutputInterface instance
+                 * Mixed           $payload Payload
+                 */
+                $this->$method($input, $output, $payload);
+            }
 
             if ( ($iterations > 0) && (++$iterationsDone >= $iterations) ) {
 

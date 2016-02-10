@@ -38,13 +38,40 @@ class Consumer extends AbstractService
     public function consume($queueAlias, $timeout = 0)
     {
         $queues = is_array($queueAlias)
-                ? $this->queueAliasResolver->getQueues($queueAlias)
-                : $this->queueAliasResolver->getQueue($queueAlias);
+            ? $this->queueAliasResolver->getQueues($queueAlias)
+            : $this->queueAliasResolver->getQueue($queueAlias);
 
-        $payloadArray = $this->redis->blpop($queues, $timeout);
+        $payloadArray = [];
+        $payloadSerialized = null;
+        $givenQueue = null;
+        $startAt = time();
 
-        list($givenQueue, $payloadSerialized) = $payloadArray;
-        $payload = $this->serializer->revert($payloadSerialized);
+        while ($payloadSerialized === null || $givenQueue === null) {
+            foreach ($queues as $queue) {
+                $jobs = $this->redis->zrangebyscore($queue, 0, time(), ['limit' => [0, 1]]);
+                $payloadArray[$queue] = $jobs;
+
+                if (count($jobs) > 0) {
+                    $givenQueue = $queue;
+                    $payloadSerialized = $jobs[0];
+                    $this->redis->zRem($queue, $jobs[0]);
+
+                    break;
+                }
+            }
+
+            if ($timeout != 0 && $startAt + $timeout < time()) {
+                break;
+            }
+
+            sleep(1);
+        }
+
+        if ($payloadSerialized === null || $givenQueue == null) {
+            return [];
+        }
+
+        $payload         = $this->serializer->revert($payloadSerialized);
         $givenQueueAlias = $this->queueAliasResolver->getQueueAlias($givenQueue);
 
         /**
@@ -53,6 +80,6 @@ class Consumer extends AbstractService
         $consumerEvent = new RSQueueConsumerEvent($payload, $payloadSerialized, $givenQueueAlias, $givenQueue, $this->redis);
         $this->eventDispatcher->dispatch(RSQueueEvents::RSQUEUE_CONSUMER, $consumerEvent);
 
-        return array($givenQueueAlias, $payload);
+        return [$givenQueueAlias, $payload];
     }
 }

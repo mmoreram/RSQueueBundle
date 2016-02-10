@@ -20,20 +20,22 @@ class Producer extends AbstractService
     /**
      * Enqueues payload inside desired queue
      *
-     * @param String $queueAlias Name of queue to enqueue payload
-     * @param Mixed  $payload    Data to enqueue
+     * @param String  $queueAlias Name of queue to enqueue payload
+     * @param Mixed   $payload    Data to enqueue
+     * @param Integer $delay      Delay in seconds, default 0
      *
      * @return Producer self Object
      *
      * @throws InvalidAliasException If any alias is not defined
      */
-    public function produce($queueAlias, $payload)
+    public function produce($queueAlias, $payload, $delay = 0)
     {
         $queue = $this->queueAliasResolver->getQueue($queueAlias);
         $payloadSerialized = $this->serializer->apply($payload);
 
-        $this->redis->rpush(
+        $this->redis->zadd(
             $queue,
+            time() + $delay,
             $payloadSerialized
         );
 
