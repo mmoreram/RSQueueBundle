@@ -43,6 +43,10 @@ class Consumer extends AbstractService
 
         $payloadArray = $this->redis->blpop($queues, $timeout);
 
+        if (empty($payloadArray)) {
+            return array();
+        }
+
         list($givenQueue, $payloadSerialized) = $payloadArray;
         $payload = $this->serializer->revert($payloadSerialized);
         $givenQueueAlias = $this->queueAliasResolver->getQueueAlias($givenQueue);
