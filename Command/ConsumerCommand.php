@@ -35,6 +35,12 @@ use Mmoreram\RSQueueBundle\Command\Abstracts\AbstractRSQueueCommand;
  */
 abstract class ConsumerCommand extends AbstractRSQueueCommand
 {
+    /**
+     * Use this variable to stop consumption
+     *
+     * @var bool
+     */
+    protected $breakExecute = false;
 
     /**
      * Adds a queue to subscribe on
@@ -115,6 +121,9 @@ abstract class ConsumerCommand extends AbstractRSQueueCommand
     {
         $this->define();
 
+        pcntl_signal(SIGTERM, [$this, 'stopExecute']);
+        pcntl_signal(SIGINT, [$this, 'stopExecute']);
+
         /** @var Consumer $consumer */
         $consumer = $this->getContainer()->get('rsqueue.consumer');
         $iterations = (int) $input->getOption('iterations');
@@ -142,11 +151,20 @@ abstract class ConsumerCommand extends AbstractRSQueueCommand
             }
 
             if ( ($iterations > 0) && (++$iterationsDone >= $iterations) ) {
-
                 break;
             }
 
             sleep($sleep);
+            pcntl_signal_dispatch();
+
+            if ($this->breakExecute) {
+                break;
+            }
         }
+    }
+
+    protected function stopExecute()
+    {
+        $this->breakExecute = true;
     }
 }
