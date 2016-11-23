@@ -154,12 +154,13 @@ abstract class ConsumerCommand extends AbstractRSQueueCommand
                 break;
             }
 
-            sleep($sleep);
             pcntl_signal_dispatch();
 
             if ($this->breakExecute) {
                 break;
             }
+
+            sleep($sleep);
         }
     }
 
