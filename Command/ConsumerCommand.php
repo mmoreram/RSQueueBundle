@@ -103,7 +103,16 @@ abstract class ConsumerCommand extends AbstractRSQueueCommand
                 Otherwise, php will sleep X seconds each iteration.
                 By default, 0',
                 0
-            );
+            )
+            ->addOption(
+                'workTime',
+                null,
+                InputOption::VALUE_OPTIONAL,
+                'Time in seconds after witch command kills itself.
+                If 0, workTime is disabled.',
+                0
+            )
+        ;
     }
 
     /**
@@ -128,9 +137,11 @@ abstract class ConsumerCommand extends AbstractRSQueueCommand
         $consumer = $this->getContainer()->get('rsqueue.consumer');
         $iterations = (int) $input->getOption('iterations');
         $timeout = (int) $input->getOption('timeout');
+        $workTime = (int) $input->getOption('workTime');
         $sleep = (int) $input->getOption('sleep');
         $iterationsDone = 0;
         $queuesAlias = array_keys($this->methods);
+        $now = time();
 
         if ($this->shuffleQueues()) {
             shuffle($queuesAlias);
@@ -151,6 +162,10 @@ abstract class ConsumerCommand extends AbstractRSQueueCommand
             }
 
             if ( ($iterations > 0) && (++$iterationsDone >= $iterations) ) {
+                break;
+            }
+
+            if ($workTime > 0 && $now + $workTime <= time()) {
                 break;
             }
 
