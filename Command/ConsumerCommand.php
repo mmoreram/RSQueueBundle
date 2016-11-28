@@ -81,8 +81,8 @@ abstract class ConsumerCommand extends AbstractRSQueueCommand
                 'Consumer timeout.
                 If 0, no timeout is set.
                 Otherwise consumer will lose conection after timeout if queue is empty.
-                By default, 0',
-                0
+                By default, 1',
+                1
             )
             ->addOption(
                 'iterations',
@@ -147,7 +147,9 @@ abstract class ConsumerCommand extends AbstractRSQueueCommand
             shuffle($queuesAlias);
         }
 
-        while ($job = $consumer->consume($queuesAlias, $timeout)) {
+        while (true) {
+            $job = $consumer->consume($queuesAlias, $timeout);
+
             if ($job instanceof JobData) {
                 $method = $this->methods[$job->getQueue()];
 
