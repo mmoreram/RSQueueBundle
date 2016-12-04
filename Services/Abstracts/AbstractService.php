@@ -8,8 +8,8 @@
 
 namespace Mmoreram\RSQueueBundle\Services\Abstracts;
 
+use Mmoreram\RSQueueBundle\Redis\AdapterInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Redis as RedisClient;
 use Mmoreram\RSQueueBundle\Serializer\Interfaces\SerializerInterface;
 use Mmoreram\RSQueueBundle\Resolver\QueueAliasResolver;
 
@@ -28,11 +28,11 @@ class AbstractService
     protected $eventDispatcher;
 
     /**
-     * @var Predis\Client
+     * @var AdapterInterface
      *
      * Redis client used to interact with redis service
      */
-    protected $redis;
+    protected $redisAdapter;
 
     /**
      * @var QueueAliasResolver
@@ -49,17 +49,17 @@ class AbstractService
     protected $serializer;
 
     /**
-     * @param EventDispatcher     $eventDispatcher    EventDispatcher instance
-     * @param Predis\Client       $redis              Redis instance
-     * @param QueueAliasResolver  $queueAliasResolver Resolver for queue alias
-     * @param SerializerInterface $serializer         Serializer instance
+     * @param EventDispatcherInterface $eventDispatcher    EventDispatcher instance
+     * @param AdapterInterface    $redisAdapter           Redis adapter instance
+     * @param QueueAliasResolver       $queueAliasResolver Resolver for queue alias
+     * @param SerializerInterface      $serializer         Serializer instance
      *
      * Construct method
      */
-    public function __construct(EventDispatcherInterface $eventDispatcher, RedisClient $redis, QueueAliasResolver $queueAliasResolver, SerializerInterface $serializer)
+    public function __construct(EventDispatcherInterface $eventDispatcher,AdapterInterface $redisAdapter, QueueAliasResolver $queueAliasResolver, SerializerInterface $serializer)
     {
         $this->eventDispatcher = $eventDispatcher;
-        $this->redis = $redis;
+        $this->redisAdapter = $redisAdapter;
         $this->queueAliasResolver = $queueAliasResolver;
         $this->serializer = $serializer;
     }

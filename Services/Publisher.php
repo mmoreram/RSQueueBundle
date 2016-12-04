@@ -8,9 +8,10 @@
 
 namespace Mmoreram\RSQueueBundle\Services;
 
-use Mmoreram\RSQueueBundle\Services\Abstracts\AbstractService;
-use Mmoreram\RSQueueBundle\RSQueueEvents;
 use Mmoreram\RSQueueBundle\Event\RSQueuePublisherEvent;
+use Mmoreram\RSQueueBundle\Exception\InvalidAliasException;
+use Mmoreram\RSQueueBundle\RSQueueEvents;
+use Mmoreram\RSQueueBundle\Services\Abstracts\AbstractService;
 
 /**
  * Publisher class
@@ -23,7 +24,7 @@ class Publisher extends AbstractService
      * @param String $channelAlias Name of channel to publish payload
      * @param Mixed  $payload      Data to publish
      *
-     * @return Producer self Object
+     * @return Publisher self Object
      *
      * @throws InvalidAliasException If any alias is not defined
      */
@@ -32,7 +33,7 @@ class Publisher extends AbstractService
         $channel = $this->queueAliasResolver->getQueue($channelAlias);
         $payloadSerialized = $this->serializer->apply($payload);
 
-        $this->redis->publish(
+        $this->redisAdapter->publish(
             $channel,
             $payloadSerialized
         );
@@ -40,7 +41,7 @@ class Publisher extends AbstractService
         /**
          * Dispatching publisher event...
          */
-        $publisherEvent = new RSQueuePublisherEvent($payload, $payloadSerialized, $channelAlias, $channel, $this->redis);
+        $publisherEvent = new RSQueuePublisherEvent($payload, $payloadSerialized, $channelAlias, $channel, $this->redisAdapter->getClient());
         $this->eventDispatcher->dispatch(RSQueueEvents::RSQUEUE_PUBLISHER, $publisherEvent);
 
         return $this;

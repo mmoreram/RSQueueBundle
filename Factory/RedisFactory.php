@@ -8,6 +8,10 @@
 
 namespace Mmoreram\RSQueueBundle\Factory;
 
+use Mmoreram\RSQueueBundle\Redis\AdapterInterface;
+use Mmoreram\RSQueueBundle\Redis\PredisClientAdapter;
+use Mmoreram\RSQueueBundle\Redis\RedisAdapter;
+use Predis\Client;
 use Redis;
 
 /**
@@ -30,19 +34,37 @@ class RedisFactory
     }
 
     /**
-     * Generate new Predis instance
+     * Generate a AdapterInterface instance
      *
-     * @return \Redis instance
+     * @return AdapterInterface
      */
     public function get()
     {
-        $redis = new Redis;
-        $redis->connect($this->config['host'], $this->config['port']);
-        $redis->setOption(Redis::OPT_READ_TIMEOUT, -1);
-        if ($this->config['database']) {
-            $redis->select($this->config['database']);
+        if ($this->config['driver'] === 'predis') {
+
+            $connectionParameters = array(
+                'scheme' => 'tcp',
+                'host' => $this->config['host'],
+                'port' => $this->config['port'],
+                'read_write_timeout' => -1
+            );
+            if ($this->config['database']) {
+                $connectionParameters['database'] = $this->config['database'];
+            }
+            $redis = new Client($connectionParameters);
+
+            return new PredisClientAdapter($redis);
+        } else {
+            $redis = new Redis;
+            $redis->connect($this->config['host'], $this->config['port']);
+            $redis->setOption(Redis::OPT_READ_TIMEOUT, -1);
+            if ($this->config['database']) {
+                $redis->select($this->config['database']);
+            }
+
+            return new RedisAdapter($redis);
         }
 
-        return $redis;
+
     }
 }

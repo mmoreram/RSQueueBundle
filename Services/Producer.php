@@ -8,6 +8,7 @@
 
 namespace Mmoreram\RSQueueBundle\Services;
 
+use Mmoreram\RSQueueBundle\Exception\InvalidAliasException;
 use Mmoreram\RSQueueBundle\Services\Abstracts\AbstractService;
 use Mmoreram\RSQueueBundle\RSQueueEvents;
 use Mmoreram\RSQueueBundle\Event\RSQueueProducerEvent;
@@ -32,15 +33,15 @@ class Producer extends AbstractService
         $queue = $this->queueAliasResolver->getQueue($queueAlias);
         $payloadSerialized = $this->serializer->apply($payload);
 
-        $this->redis->rpush(
+        $this->redisAdapter->rPush(
             $queue,
-            $payloadSerialized
+            array($payloadSerialized)
         );
 
         /**
          * Dispatching producer event...
          */
-        $producerEvent = new RSQueueProducerEvent($payload, $payloadSerialized, $queueAlias, $queue, $this->redis);
+        $producerEvent = new RSQueueProducerEvent($payload, $payloadSerialized, $queueAlias, $queue, $this->redisAdapter->getClient());
         $this->eventDispatcher->dispatch(RSQueueEvents::RSQUEUE_PRODUCER, $producerEvent);
 
         return $this;

@@ -35,7 +35,7 @@ abstract class AbstractRSQueueEvent extends AbstractRSEvent
      * @param String $payloadSerialized Payload serialized
      * @param string $queueAlias        Queue alias
      * @param string $queueName         Queue name
-     * @param Redis  $redis             Redis instance
+     * @param \Redis|\Predis\Client $redis Redis instance
      */
     public function __construct($payload, $payloadSerialized, $queueAlias, $queueName, $redis)
     {
