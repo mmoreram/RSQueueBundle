@@ -84,7 +84,7 @@ class LockHandler
 
         if (
             !is_array($content) ||
-            !isset($content['id'])
+            !isset($content['pid'])
         ) {
             throw new LockException(sprintf('File "%s" contains bad format.', $file));
         }
