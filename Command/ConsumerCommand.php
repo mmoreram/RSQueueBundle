@@ -199,7 +199,9 @@ abstract class ConsumerCommand extends AbstractRSQueueCommand
             sleep($sleep);
         }
 
-        $lockHandler->unlock($lockFile);
+        if (!is_null($lockFile)) {
+            $lockHandler->unlock($lockFile);
+        }
     }
 
     protected function stopExecute()
