@@ -103,7 +103,7 @@ class LockHandler
             'pid' => getmypid(),
         ]);
 
-        if (@file_put_contents($content) === false) {
+        if (@file_put_contents($file, $content) === false) {
             throw new LockException(sprintf('Cant write "%s" file.', $file));
         }
     }
