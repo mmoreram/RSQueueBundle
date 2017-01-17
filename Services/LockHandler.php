@@ -80,7 +80,7 @@ class LockHandler
      */
     private function readLockFile($file)
     {
-        $content = json_decode(@file_get_contents($file));
+        $content = json_decode(@file_get_contents($file), true);
 
         if (
             !is_array($content) ||
