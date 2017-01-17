@@ -53,3 +53,6 @@ services:
             - { name: data_collector, template: "RSQueueBundle:Collector:rsqueue", id: "rsqueue_collector" }
             - { name: kernel.event_listener, event: rsqueue.producer, method: onProducerAction }
             - { name: kernel.event_listener, event: rsqueue.publisher, method: onPublisherAction }
+
+    rs_queue.lock_handler:
+        class: Mmoreram\RSQueueBundle\Services\LockHandler

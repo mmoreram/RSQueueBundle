@@ -10,6 +10,7 @@ namespace Mmoreram\RSQueueBundle\Command;
 
 use Mmoreram\RSQueueBundle\Model\JobData;
 use Mmoreram\RSQueueBundle\Services\Consumer;
+use Mmoreram\RSQueueBundle\Services\LockHandler;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -112,6 +113,13 @@ abstract class ConsumerCommand extends AbstractRSQueueCommand
                 If 0, workTime is disabled.',
                 0
             )
+            ->addOption(
+                'lockFile',
+                null,
+                InputOption::VALUE_OPTIONAL,
+                'Lock file.',
+                0
+            )
         ;
     }
 
@@ -135,10 +143,21 @@ abstract class ConsumerCommand extends AbstractRSQueueCommand
 
         /** @var Consumer $consumer */
         $consumer = $this->getContainer()->get('rsqueue.consumer');
+        /** @var LockHandler $lockHandler */
+        $lockHandler = $this->getContainer()->get('rs_queue.lock_handler');
+
+        $lockFile = $input->getOption('lockFile');
         $iterations = (int) $input->getOption('iterations');
         $timeout = (int) $input->getOption('timeout');
         $workTime = (int) $input->getOption('workTime');
         $sleep = (int) $input->getOption('sleep');
+
+        if (!is_null($lockFile)) {
+            if (!$lockHandler->lock($lockFile)) {
+                return 1;
+            }
+        }
+
         $iterationsDone = 0;
         $queuesAlias = array_keys($this->methods);
         $now = time();
@@ -179,6 +198,8 @@ abstract class ConsumerCommand extends AbstractRSQueueCommand
 
             sleep($sleep);
         }
+
+        $lockHandler->unlock($lockFile);
     }
 
     protected function stopExecute()
