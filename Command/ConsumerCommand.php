@@ -154,7 +154,7 @@ abstract class ConsumerCommand extends AbstractRSQueueCommand
 
         if (!is_null($lockFile)) {
             if (!$lockHandler->lock($lockFile)) {
-                return 1;
+                return 0;
             }
         }
 
