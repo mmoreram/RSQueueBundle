@@ -152,7 +152,7 @@ abstract class ConsumerCommand extends AbstractRSQueueCommand
         $workTime = (int) $input->getOption('workTime');
         $sleep = (int) $input->getOption('sleep');
 
-        if (!is_null($lockFile)) {
+        if ($input->hasOption('lockFile')) {
             if (!$lockHandler->lock($lockFile)) {
                 return 0;
             }
@@ -200,7 +200,7 @@ abstract class ConsumerCommand extends AbstractRSQueueCommand
                 sleep($sleep);
             }
         } finally {
-            if (!is_null($lockFile)) {
+            if ($input->hasOption('lockFile')) {
                 $lockHandler->unlock($lockFile);
             }
         }
