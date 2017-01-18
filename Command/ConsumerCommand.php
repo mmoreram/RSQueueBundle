@@ -117,8 +117,7 @@ abstract class ConsumerCommand extends AbstractRSQueueCommand
                 'lockFile',
                 null,
                 InputOption::VALUE_OPTIONAL,
-                'Lock file.',
-                0
+                'Lock file.'
             )
         ;
     }
