@@ -117,8 +117,7 @@ abstract class ConsumerCommand extends AbstractRSQueueCommand
                 'lockFile',
                 null,
                 InputOption::VALUE_OPTIONAL,
-                'Lock file.',
-                0
+                'Lock file.'
             )
         ;
     }
@@ -152,7 +151,7 @@ abstract class ConsumerCommand extends AbstractRSQueueCommand
         $workTime = (int) $input->getOption('workTime');
         $sleep = (int) $input->getOption('sleep');
 
-        if ($input->hasOption('lockFile')) {
+        if (!is_null($lockFile)) {
             if (!$lockHandler->lock($lockFile)) {
                 return 0;
             }
@@ -200,7 +199,7 @@ abstract class ConsumerCommand extends AbstractRSQueueCommand
                 sleep($sleep);
             }
         } finally {
-            if ($input->hasOption('lockFile')) {
+            if (!is_null($lockFile)) {
                 $lockHandler->unlock($lockFile);
             }
         }
