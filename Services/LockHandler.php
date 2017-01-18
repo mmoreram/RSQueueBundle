@@ -3,6 +3,7 @@
 namespace Mmoreram\RSQueueBundle\Services;
 
 use Mmoreram\RSQueueBundle\Exception\LockException;
+use Symfony\Component\Process\Process;
 
 /**
  * Class LockHandler
@@ -53,13 +54,35 @@ class LockHandler
         }
 
         $content = $this->readLockFile($file);
-        $pid = $content['pid'];
 
-        if ($this->processExists($pid)) {
+        if (
+            $this->processExists($content['pid']) &&
+            $content['stime'] == $this->getProcessStartTime($content['pid'])
+        ) {
             return true;
         } else {
             return false;
         }
+    }
+
+    /**
+     * @param $pid
+     *
+     * @return string
+     * @throws LockException
+     */
+    private function getProcessStartTime($pid)
+    {
+        $cmd = spritnf('ps -p %s -wo lstart | tail -n 1', $pid);
+        $process = new Process($cmd);
+        $process->run();
+
+        if (!$process->isSuccessful()) {
+            $message = sprintf('Command "%s" is unsuccessfull with error: %s', $cmd, $process->getErrorOutput());
+            throw new LockException($message);
+        }
+
+        return trim($process->getOutput());
     }
 
     /**
@@ -99,8 +122,10 @@ class LockHandler
      */
     private function createLockFile($file)
     {
+        $pid = getmypid();
         $content = json_encode([
-            'pid' => getmypid(),
+            'pid' => $pid,
+            'stime' => $this->getProcessStartTime($pid),
         ]);
 
         if (@file_put_contents($file, $content) === false) {
