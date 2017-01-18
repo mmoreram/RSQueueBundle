@@ -166,41 +166,43 @@ abstract class ConsumerCommand extends AbstractRSQueueCommand
             shuffle($queuesAlias);
         }
 
-        while (true) {
-            $job = $consumer->consume($queuesAlias, $timeout);
+        try {
+            while (true) {
+                $job = $consumer->consume($queuesAlias, $timeout);
 
-            if ($job instanceof JobData) {
-                $method = $this->methods[$job->getQueue()];
+                if ($job instanceof JobData) {
+                    $method = $this->methods[$job->getQueue()];
 
-                /**
-                 * All custom methods must have these parameters
-                 *
-                 * InputInterface  $input   An InputInterface instance
-                 * OutputInterface $output  An OutputInterface instance
-                 * Mixed           $payload Payload
-                 */
-                $this->$method($input, $output, $job->getPayload());
+                    /**
+                     * All custom methods must have these parameters
+                     *
+                     * InputInterface  $input   An InputInterface instance
+                     * OutputInterface $output  An OutputInterface instance
+                     * Mixed           $payload Payload
+                     */
+                    $this->$method($input, $output, $job->getPayload());
+                }
+
+                if (($iterations > 0) && (++$iterationsDone >= $iterations)) {
+                    break;
+                }
+
+                if ($workTime > 0 && $now + $workTime <= time()) {
+                    break;
+                }
+
+                pcntl_signal_dispatch();
+
+                if ($this->breakExecute) {
+                    break;
+                }
+
+                sleep($sleep);
             }
-
-            if ( ($iterations > 0) && (++$iterationsDone >= $iterations) ) {
-                break;
+        } finally {
+            if (!is_null($lockFile)) {
+                $lockHandler->unlock($lockFile);
             }
-
-            if ($workTime > 0 && $now + $workTime <= time()) {
-                break;
-            }
-
-            pcntl_signal_dispatch();
-
-            if ($this->breakExecute) {
-                break;
-            }
-
-            sleep($sleep);
-        }
-
-        if (!is_null($lockFile)) {
-            $lockHandler->unlock($lockFile);
         }
     }
 
