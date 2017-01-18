@@ -73,7 +73,7 @@ class LockHandler
      */
     private function getProcessStartTime($pid)
     {
-        $cmd = spritnf('ps -p %s -wo lstart | tail -n 1', $pid);
+        $cmd = sprintf('ps -p %s -wo lstart | tail -n 1', $pid);
         $process = new Process($cmd);
         $process->run();
 
