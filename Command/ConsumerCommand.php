@@ -10,6 +10,7 @@ namespace Mmoreram\RSQueueBundle\Command;
 
 use Mmoreram\RSQueueBundle\Model\JobData;
 use Mmoreram\RSQueueBundle\Services\Consumer;
+use Mmoreram\RSQueueBundle\Services\LockHandler;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -112,6 +113,13 @@ abstract class ConsumerCommand extends AbstractRSQueueCommand
                 If 0, workTime is disabled.',
                 0
             )
+            ->addOption(
+                'lockFile',
+                null,
+                InputOption::VALUE_OPTIONAL,
+                'Lock file.',
+                0
+            )
         ;
     }
 
@@ -135,10 +143,21 @@ abstract class ConsumerCommand extends AbstractRSQueueCommand
 
         /** @var Consumer $consumer */
         $consumer = $this->getContainer()->get('rsqueue.consumer');
+        /** @var LockHandler $lockHandler */
+        $lockHandler = $this->getContainer()->get('rs_queue.lock_handler');
+
+        $lockFile = $input->getOption('lockFile');
         $iterations = (int) $input->getOption('iterations');
         $timeout = (int) $input->getOption('timeout');
         $workTime = (int) $input->getOption('workTime');
         $sleep = (int) $input->getOption('sleep');
+
+        if (!is_null($lockFile)) {
+            if (!$lockHandler->lock($lockFile)) {
+                return 0;
+            }
+        }
+
         $iterationsDone = 0;
         $queuesAlias = array_keys($this->methods);
         $now = time();
@@ -147,37 +166,43 @@ abstract class ConsumerCommand extends AbstractRSQueueCommand
             shuffle($queuesAlias);
         }
 
-        while (true) {
-            $job = $consumer->consume($queuesAlias, $timeout);
+        try {
+            while (true) {
+                $job = $consumer->consume($queuesAlias, $timeout);
 
-            if ($job instanceof JobData) {
-                $method = $this->methods[$job->getQueue()];
+                if ($job instanceof JobData) {
+                    $method = $this->methods[$job->getQueue()];
 
-                /**
-                 * All custom methods must have these parameters
-                 *
-                 * InputInterface  $input   An InputInterface instance
-                 * OutputInterface $output  An OutputInterface instance
-                 * Mixed           $payload Payload
-                 */
-                $this->$method($input, $output, $job->getPayload());
+                    /**
+                     * All custom methods must have these parameters
+                     *
+                     * InputInterface  $input   An InputInterface instance
+                     * OutputInterface $output  An OutputInterface instance
+                     * Mixed           $payload Payload
+                     */
+                    $this->$method($input, $output, $job->getPayload());
+                }
+
+                if (($iterations > 0) && (++$iterationsDone >= $iterations)) {
+                    break;
+                }
+
+                if ($workTime > 0 && $now + $workTime <= time()) {
+                    break;
+                }
+
+                pcntl_signal_dispatch();
+
+                if ($this->breakExecute) {
+                    break;
+                }
+
+                sleep($sleep);
             }
-
-            if ( ($iterations > 0) && (++$iterationsDone >= $iterations) ) {
-                break;
+        } finally {
+            if (!is_null($lockFile)) {
+                $lockHandler->unlock($lockFile);
             }
-
-            if ($workTime > 0 && $now + $workTime <= time()) {
-                break;
-            }
-
-            pcntl_signal_dispatch();
-
-            if ($this->breakExecute) {
-                break;
-            }
-
-            sleep($sleep);
         }
     }
 
