@@ -55,8 +55,7 @@ class LockHandler
 
         $content = $this->readLockFile($file);
 
-        if (
-            $this->processExists($content['pid']) &&
+        if ($this->processExists($content['pid']) &&
             $content['stime'] == $this->getProcessStartTime($content['pid'])
         ) {
             return true;
@@ -105,8 +104,7 @@ class LockHandler
     {
         $content = json_decode(@file_get_contents($file), true);
 
-        if (
-            !is_array($content) ||
+        if (!is_array($content) ||
             !isset($content['pid'])
         ) {
             throw new LockException(sprintf('File "%s" contains bad format.', $file));

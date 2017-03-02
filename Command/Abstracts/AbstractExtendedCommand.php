@@ -8,11 +8,11 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Class AbstractLockedCommand
+ * Class AbstractExtendedCommand
  *
  * @package Mmoreram\RSQueueBundle\Command\Abstracts
  */
-abstract class AbstractLockedCommand extends ContainerAwareCommand
+abstract class AbstractExtendedCommand extends ContainerAwareCommand
 {
     /**
      * Important to always call parent::configure!!!!!
@@ -43,9 +43,10 @@ abstract class AbstractLockedCommand extends ContainerAwareCommand
      */
     final protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $lockHandler = $this->getContainer()->get('rs_queue.lock_handler');
         $lockFile = $input->getOption('lockFile');
         $graceful = $input->getOption('gracefulShutdown');
+
+        $lockHandler = $this->getContainer()->get('rs_queue.lock_handler');
 
         if (!is_null($lockFile)) {
             if (!$lockHandler->lock($lockFile)) {
