@@ -8,9 +8,9 @@
 
 namespace Mmoreram\RSQueueBundle\Command\Abstracts;
 
+use Mmoreram\RSQueueBundle\Exception\MethodNotFoundException;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Mmoreram\RSQueueBundle\Command\Interfaces\RSQueueCommandInterface;
-use Mmoreram\RSQueueBundle\Exceptions\MethodNotFoundException;
 
 /**
  * Abstract rs queue command
@@ -33,7 +33,7 @@ abstract class AbstractRSQueueCommand extends ContainerAwareCommand implements R
      * @param String $alias  Queue alias
      * @param String $method Queue method
      *
-     * @return SubscriberCommand self Object
+     * @return AbstractRSQueueCommand self Object
      *
      * @throws MethodNotFoundException If any method is not callable
      */
