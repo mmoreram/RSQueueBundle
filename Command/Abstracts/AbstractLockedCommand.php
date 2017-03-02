@@ -15,7 +15,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 abstract class AbstractLockedCommand extends ContainerAwareCommand
 {
     /**
-     * Important to always call parent::configure
+     * Important to always call parent::configure!!!!!
      */
     protected function configure()
     {
@@ -26,9 +26,13 @@ abstract class AbstractLockedCommand extends ContainerAwareCommand
                 InputOption::VALUE_OPTIONAL,
                 'Lock file.'
             )
+            -> addOption(
+                'gracefulShutdown',
+                false,
+                InputOption::VALUE_OPTIONAL,
+                'Force graceful shutdown of command.'
+            )
         ;
-
-        parent::configure();
     }
 
     /**
@@ -41,14 +45,18 @@ abstract class AbstractLockedCommand extends ContainerAwareCommand
     {
         $lockHandler = $this->getContainer()->get('rs_queue.lock_handler');
         $lockFile = $input->getOption('lockFile');
+        $graceful = $input->getOption('gracefulShutdown');
+
         if (!is_null($lockFile)) {
             if (!$lockHandler->lock($lockFile)) {
                 return 0;
             }
         }
 
-        pcntl_signal(SIGTERM, [$this, 'stopExecute']);
-        pcntl_signal(SIGINT, [$this, 'stopExecute']);
+        if ($graceful) {
+            pcntl_signal(SIGTERM, [$this, 'stopExecute']);
+            pcntl_signal(SIGINT, [$this, 'stopExecute']);
+        }
 
         try {
             $this->executeCommand($input, $output);
@@ -61,6 +69,20 @@ abstract class AbstractLockedCommand extends ContainerAwareCommand
         return 0;
     }
 
+    /**
+     * Definition of what will happen when you kill the command
+     *
+     * @return void
+     */
     abstract protected function stopExecute();
+
+    /**
+     * Definition of the command
+     *
+     * @param InputInterface  $input
+     * @param OutputInterface $output
+     *
+     * @return int | null
+     */
     abstract protected function executeCommand(InputInterface $input, OutputInterface $output);
 }
