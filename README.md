@@ -87,8 +87,7 @@ return array(
 
 ## Configuration
 
-In this first version, all conections are localhost:6379, but as soon as posible connections will be configurable.  
-You need to configure all queues and serializer.  
+In order to produce and consume messages, you need to configure all the queues and the serializer.  
 By default serializer has the value 'Json', but also 'PHP' value can be used. Also custom serializer can be implemented by extending default serializer interface. Then you need to add namespace of class into the rs_queue.serializer parameter.
 
 ``` yml
