@@ -35,7 +35,7 @@ abstract class AbstractRSChannelEvent extends AbstractRSEvent
      * @param String $payloadSerialized Payload serialized
      * @param string $channelAlias      Channel alias
      * @param string $channelName       Channel name
-     * @param Redis  $redis             Redis instance
+     * @param \Redis|\Predis\Client  $redis             Redis instance
      */
     public function __construct($payload, $payloadSerialized, $channelAlias, $channelName, $redis)
     {

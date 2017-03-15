@@ -9,7 +9,6 @@
 namespace Mmoreram\RSQueueBundle\Event\Abstracts;
 
 use Symfony\Component\EventDispatcher\Event;
-use Redis as RedisClient;
 
 /**
  * Abstract event
@@ -32,7 +31,7 @@ abstract class AbstractRSEvent extends Event
     protected $payloadSerialized;
 
     /**
-     * @var Redis
+     * @var \Redis|\Predis\Client
      *
      * Redis instance
      */
@@ -43,9 +42,9 @@ abstract class AbstractRSEvent extends Event
      *
      * @param Mixed  $payload           Payload
      * @param String $payloadSerialized Payload serialized
-     * @param Redis  $redis             Redis instance
+     * @param \Redis|\Predis\Client $redis Redis instance
      */
-    public function __construct($payload, $payloadSerialized, RedisClient $redis)
+    public function __construct($payload, $payloadSerialized, $redis)
     {
         $this->payload = $payload;
         $this->payloadSerialized = $payloadSerialized;
@@ -75,7 +74,7 @@ abstract class AbstractRSEvent extends Event
     /**
      * Return redis instance
      *
-     * @return Redis
+     * @return \Redis|\Predis\Client
      */
     public function getRedis()
     {

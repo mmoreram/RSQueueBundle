@@ -8,6 +8,7 @@
 
 namespace Mmoreram\RSQueueBundle\Services;
 
+use Mmoreram\RSQueueBundle\Exception\InvalidAliasException;
 use Mmoreram\RSQueueBundle\Services\Abstracts\AbstractService;
 use Mmoreram\RSQueueBundle\RSQueueEvents;
 use Mmoreram\RSQueueBundle\Event\RSQueueConsumerEvent;
@@ -41,7 +42,7 @@ class Consumer extends AbstractService
                 ? $this->queueAliasResolver->getQueues($queueAlias)
                 : $this->queueAliasResolver->getQueue($queueAlias);
 
-        $payloadArray = $this->redis->blpop($queues, $timeout);
+        $payloadArray = $this->redisAdapter->blPop($queues, $timeout);
 
         if (empty($payloadArray)) {
             return array();
@@ -54,7 +55,7 @@ class Consumer extends AbstractService
         /**
          * Dispatching consumer event...
          */
-        $consumerEvent = new RSQueueConsumerEvent($payload, $payloadSerialized, $givenQueueAlias, $givenQueue, $this->redis);
+        $consumerEvent = new RSQueueConsumerEvent($payload, $payloadSerialized, $givenQueueAlias, $givenQueue, $this->redisAdapter->getClient());
         $this->eventDispatcher->dispatch(RSQueueEvents::RSQUEUE_CONSUMER, $consumerEvent);
 
         return array($givenQueueAlias, $payload);

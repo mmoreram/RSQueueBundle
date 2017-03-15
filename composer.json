@@ -24,6 +24,9 @@
     "require-dev": {
         "symfony/phpunit-bridge": "~2.7"
     },
+    "suggest": {
+        "predis/predis": "Another Redis driver"
+    },
     "autoload": {
         "psr-4": { "Mmoreram\\RSQueueBundle\\": "" }
     },
