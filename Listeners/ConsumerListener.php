@@ -20,9 +20,9 @@ class ConsumerListener
     /**
      * ConsumerListener constructor.
      *
-     * @param Registry $doctrine
+     * @param $doctrine
      */
-    public function __construct(Registry $doctrine)
+    public function __construct($doctrine)
     {
         $this->doctrine = $doctrine;
     }

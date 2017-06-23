@@ -15,6 +15,8 @@
         "php": ">=5.3.3",
         "symfony/event-dispatcher": "~2.3|~3.0",
         "symfony/framework-bundle": "~2.3|~3.0",
+        "doctrine/orm": "^2.4.8",
+        "doctrine/doctrine-bundle": "~1.4",
         "doctrine/annotations": "^1.1.2",
         "symfony/console": "~2.3|~3.0",
         "symfony/process": "~2.3|~3.0",
