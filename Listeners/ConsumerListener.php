@@ -4,6 +4,9 @@ namespace Mmoreram\RSQueueBundle\Listeners;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Mmoreram\RSQueueBundle\Event\RSQueueConsumerEvent;
+use Doctrine\Common\Persistence\ManagerRegistry;
+use Symfony\Bridge\Doctrine\RegistryInterface;
+
 
 /**
  * Class ConsumerListener
@@ -15,16 +18,16 @@ class ConsumerListener
     /**
      * @var Registry
      */
-    protected $doctrine;
+    protected $registry;
 
     /**
      * ConsumerListener constructor.
      *
-     * @param $doctrine
+     * @param $registry
      */
-    public function __construct($doctrine)
+    public function __construct(ManagerRegistry $registry)
     {
-        $this->doctrine = $doctrine;
+        $this->registry = $registry;
     }
 
     /**
@@ -32,6 +35,6 @@ class ConsumerListener
      */
     public function checkRSQConsumerEvent(RSQueueConsumerEvent $event)
     {
-        $this->doctrine->getManager()->clear();
+        $this->registry->getManager()->clear();
     }
 }
