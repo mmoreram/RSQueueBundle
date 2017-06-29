@@ -47,6 +47,13 @@ services:
         class: Mmoreram\RSQueueBundle\Services\Publisher
         parent: rs_queue.service
 
+    rs_queue.listener:
+            class: Mmoreram\RSQueueBundle\Listeners\ConsumerListener
+            arguments:
+                - "@doctrine"
+            tags:
+                - { name: kernel.event_listener, event: rsqueue.consumer, method: checkRSQConsumerEvent }
+
     rs_queue.data_collector:
         class: Mmoreram\RSQueueBundle\Collector\RSQueueCollector
         tags:
