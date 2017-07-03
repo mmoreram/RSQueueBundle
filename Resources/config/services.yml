@@ -50,7 +50,7 @@ services:
     rs_queue.listener:
             class: Mmoreram\RSQueueBundle\Listeners\ConsumerListener
             arguments:
-                - "@doctrine"
+                - "@?doctrine"
             tags:
                 - { name: kernel.event_listener, event: rsqueue.consumer, method: checkRSQConsumerEvent }
 

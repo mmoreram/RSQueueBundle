@@ -33,6 +33,8 @@ class ConsumerListener
      */
     public function checkRSQConsumerEvent(RSQueueConsumerEvent $event)
     {
-        $this->registry->getManager()->clear();
+        if (!is_null($this->registry)) {
+            $this->registry->getManager()->clear();
+        }
     }
 }
