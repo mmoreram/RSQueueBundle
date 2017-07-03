@@ -3,7 +3,7 @@
 namespace Mmoreram\RSQueueBundle\Tests\Resolver;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use Mmoreram\RSQueueBundle\Listeners\ConsumerListener;
+use Mmoreram\RSQueueBundle\Listeners\DoctrineCacheClear;
 use Mmoreram\RSQueueBundle\Event\RSQueueConsumerEvent;
 use Symfony\Bridge\Doctrine\ManagerRegistry;
 
@@ -35,7 +35,7 @@ class RSQueueConsumerListenerTest extends \PHPUnit_Framework_TestCase
             ->method('getManager')
             ->willReturn($objectManager);
 
-        $listener = new ConsumerListener($managerRegistry);
+        $listener = new DoctrineCacheClear($managerRegistry);
 
         $event = $this->getMockBuilder(RSQueueConsumerEvent::class)->disableOriginalConstructor()->getMock();
 

@@ -47,12 +47,17 @@ services:
         class: Mmoreram\RSQueueBundle\Services\Publisher
         parent: rs_queue.service
 
-    rs_queue.listener:
-            class: Mmoreram\RSQueueBundle\Listeners\ConsumerListener
-            arguments:
-                - "@doctrine"
-            tags:
-                - { name: kernel.event_listener, event: rsqueue.consumer, method: checkRSQConsumerEvent }
+    rs_queue.consumer.cache.clear:
+        class: Mmoreram\RSQueueBundle\Cleaners\DoctrineCacheClear
+        arguments:
+            - "@service_container"
+
+    rs_queue.cache.processing:
+        class: Mmoreram\RSQueueBundle\Listeners\CacheProcessing
+        arguments:
+            - "@rs_queue.consumer.cache.clear"
+        tags:
+            - { name: kernel.event_listener, event: rsqueue.consumer, method: cleanerProcessing }
 
     rs_queue.data_collector:
         class: Mmoreram\RSQueueBundle\Collector\RSQueueCollector
