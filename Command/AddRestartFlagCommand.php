@@ -13,7 +13,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class AddRestartFlagCommand extends AbstractExtendedCommand
 {
-    const RSQUEUE_WORKERS_RESTART_TIMESTAMP= 'rsqueue_workers_restart_timestamp';
+    const RSQUEUE_WORKERS_RESTART_TIMESTAMP_PREFIX = 'rsqueue_workers_restart_timestamp_';
 
     /**
      * @var \Redis
@@ -21,11 +21,19 @@ class AddRestartFlagCommand extends AbstractExtendedCommand
     protected $redis;
 
     /**
-     * @param \Redis $redis
+     * @var string
      */
-    public function __construct(\Redis $redis)
+    protected $microServiceName;
+
+    /**
+     * @param \Redis $redis
+     * @param string $microServiceName
+     */
+    public function __construct(\Redis $redis, string $microServiceName)
     {
         $this->redis = $redis;
+
+        $this->microServiceName = $microServiceName;
 
         parent::__construct();
     }
@@ -58,7 +66,7 @@ class AddRestartFlagCommand extends AbstractExtendedCommand
      */
     protected function executeCommand(InputInterface $input, OutputInterface $output)
     {
-        $this->redis->set(self::RSQUEUE_WORKERS_RESTART_TIMESTAMP, time());
+        $this->redis->set(self::RSQUEUE_WORKERS_RESTART_TIMESTAMP_PREFIX . $this->microServiceName, time());
 
         return;
     }
