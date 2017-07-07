@@ -63,3 +63,10 @@ services:
 
     rs_queue.lock_handler:
         class: Mmoreram\RSQueueBundle\Services\LockHandler
+
+    rs_queue.command.add_restart_flag:
+          class: Mmoreram\RSQueueBundle\Command\AddRestartFlagCommand
+          tags:
+              - {name: console.command}
+          arguments:
+              - '@rs_queue.redis'

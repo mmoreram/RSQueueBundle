@@ -132,6 +132,7 @@ abstract class ConsumerCommand extends AbstractRSQueueCommand
      * @param OutputInterface $output An OutputInterface instance
      *
      * @throws InvalidAliasException If any alias is not defined
+     * @return int
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
@@ -144,6 +145,8 @@ abstract class ConsumerCommand extends AbstractRSQueueCommand
         $consumer = $this->getContainer()->get('rsqueue.consumer');
         /** @var LockHandler $lockHandler */
         $lockHandler = $this->getContainer()->get('rs_queue.lock_handler');
+        /** @var \Redis $redis */
+        $redis = $this->getContainer()->get('rs_queue.redis');
 
         $lockFile = $input->getOption('lockFile');
         $iterations = (int) $input->getOption('iterations');
@@ -167,6 +170,17 @@ abstract class ConsumerCommand extends AbstractRSQueueCommand
 
         try {
             while (true) {
+                $restartTime = $redis->get(AddRestartFlagCommand::RSQUEUE_WORKERS_RESTART_TIMESTAMP);
+                if ($restartTime !== false && $now < $restartTime) {
+                    $this->stopExecute();
+                }
+
+                pcntl_signal_dispatch();
+
+                if ($this->breakExecute) {
+                    break;
+                }
+
                 $job = $consumer->consume($queuesAlias, $timeout);
 
                 if ($job instanceof JobData) {
@@ -187,12 +201,6 @@ abstract class ConsumerCommand extends AbstractRSQueueCommand
                 }
 
                 if ($workTime > 0 && $now + $workTime <= time()) {
-                    break;
-                }
-
-                pcntl_signal_dispatch();
-
-                if ($this->breakExecute) {
                     break;
                 }
 
