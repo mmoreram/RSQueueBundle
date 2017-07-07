@@ -23,17 +23,16 @@ class AddRestartFlagCommand extends AbstractExtendedCommand
     /**
      * @var string
      */
-    protected $microServiceName;
+    protected $namespace;
 
     /**
      * @param \Redis $redis
-     * @param string $microServiceName
+     * @param string $namespace
      */
-    public function __construct(\Redis $redis, string $microServiceName)
+    public function __construct(\Redis $redis, string $namespace)
     {
         $this->redis = $redis;
-
-        $this->microServiceName = $microServiceName;
+        $this->namespace = $namespace;
 
         parent::__construct();
     }
@@ -66,7 +65,7 @@ class AddRestartFlagCommand extends AbstractExtendedCommand
      */
     protected function executeCommand(InputInterface $input, OutputInterface $output)
     {
-        $this->redis->set(self::RSQUEUE_WORKERS_RESTART_TIMESTAMP_PREFIX . $this->microServiceName, time());
+        $this->redis->set(self::RSQUEUE_WORKERS_RESTART_TIMESTAMP_PREFIX . $this->namespace, time());
 
         return;
     }

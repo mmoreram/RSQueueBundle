@@ -38,12 +38,9 @@ class RSQueueExtension extends Extension
             $config['server']['redis']
         );
 
-        $microServiceConfiguration = new MicroServiceConfiguration();
-        $microServiceConfig = $this->processConfiguration($microServiceConfiguration, $configs);
-
         $container->setParameter(
-            'microservice.name',
-            $microServiceConfig['name']
+            'rs_queue.namespace',
+            $config['namespace']
         );
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));

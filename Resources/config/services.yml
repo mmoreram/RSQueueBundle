@@ -3,7 +3,6 @@ parameters:
     rs_queue.serializer.interface: Mmoreram\RSQueueBundle\SerializerInterface
     rs_queue.redis.factory.class: Mmoreram\RSQueueBundle\Factory\RedisFactory
     rs_queue.resolver.queuealias.class: Mmoreram\RSQueueBundle\Resolver\QueueAliasResolver
-    microservice.name: ''
 
 services:
 
@@ -71,4 +70,4 @@ services:
               - {name: console.command}
           arguments:
               - '@rs_queue.redis'
-`              - '%microservice.name%'
+              - '%rs_queue.namespace%'
